@@ -82,14 +82,23 @@ declare global {
 }
 
 type Distinct<T, DistinctName> = T & { __TYPE__: DistinctName };
-
 export type NormalizedName = Distinct<string, "NormalizedName">;
 
-export type ServerAgentRequest = {
-  agentName: string;
-  message: string;
-  stateful?: boolean;
-};
+export namespace ServerAgent {
+  export type Request = {
+    agentName: string;
+    message: string;
+    stateful?: boolean;
+  };
+
+  export type Response = {
+    messages: HistoryEntry[];
+  };
+
+  export interface NotFoundError {
+    message: string;
+  }
+}
 
 export abstract class Registry {
   abstract list(): NormalizedName[];
