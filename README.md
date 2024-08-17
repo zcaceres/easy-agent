@@ -9,17 +9,15 @@ Currently supports Anthropic's Claude family of models.
 ## Why?
 
 - There's a LOT of plumbing in AI SDKs. You spend more time parsing JSON than iterating on your agent.
-- You only need two concepts to make an awesome AI Agent: Agents and Tools. That's what this package focuses on.
 - TS > Python if you're already working in web apps.
+- You only need two concepts to make an awesome AI Agent: Agents and Tools. This package hides everything else and focuses on a good experience with those two concepts.
 
 ## Features
 
-- Hides a ton of configuration and plumbing behind simple classes with one and only one type-safe way to create them.
+- Hides configuration and plumbing behind simple classes (`Agent` and `Tool`) with one and only one type-safe way to create them.
 - Sensible defaults (which you can easily override)
-- Automatic handling of tool request/response cycle
-- Message & Stream mode
-- One simple way to define type-safe Agents
-- One simple way to define type-safe Tools
+- Automatic handling of the tool request/response cycle
+- Supports message & stream modes
 - Vigorous type-safety
 - A few fun pre-baked Agents
 - CLI and Server mode (Server mode coming soon)
@@ -38,7 +36,7 @@ Run:
 bun start
 ```
 
-Make sure to include an API key in your environment as `ANTHROPIC_API_KEY`.
+> Make sure you have an ANTHROPIC_API_KEY key in your environment.
 
 ## How to Make an Agent
 
