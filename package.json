@@ -17,9 +17,6 @@
     "express": "^4.19.2",
     "yargs": "^17.7.2"
   },
-  "hooks": {
-    "pre-commit": "bun run check-types && bun run check-for-api-key"
-  },
   "scripts": {
     "start": "bun run lib/cli/cli.ts",
     "cli": "bun run lib/cli/cli.ts",

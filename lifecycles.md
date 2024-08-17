@@ -54,5 +54,3 @@ I --> I1[Done Parsing]
 I1 --> J[Send Payload to Model]
 I1 --> |For All Content Blocks| H[Render Model Response]
 ```
-
-sk-imagine-an-api-key-here
