@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 
 import type { AgentConfig, LLMClient, HistoryEntry } from "definitions";
 import config from "lib/config";
-import UI from "lib/ui";
+import UI from "lib/cli/ui";
 import ToolRunner from "lib/tool-runner";
 import SessionLog from "lib/session-log";
 import Logger from "lib/logger";
@@ -171,7 +171,7 @@ class AnthropicClient implements LLMClient {
 
   private async message() {
     const msg = await this.client.messages.create({
-      messages: this.messageHistory,
+      messages: this.messageHistory.get(),
       model: this.agentConfig.model,
       system: this.agentConfig.prompt,
       max_tokens: this.agentConfig.maxTokens,

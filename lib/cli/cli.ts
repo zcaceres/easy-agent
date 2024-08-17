@@ -1,6 +1,6 @@
 import agentRegistry from "start-here";
 import AgentSelector from "lib/agent-selector";
-import UI from "lib/ui";
+import UI from "lib/cli/ui";
 
 async function main() {
   const agent = await setup();

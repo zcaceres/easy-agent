@@ -58,13 +58,9 @@ app.post(
 
     await selectedAgent.start(message);
 
-    // the goal here would be to send the message to the agent
-    // wait for all tools to run
-    // get the response
-
     if (stateful) {
       // send back only the last response
-      res.json({ messages: selectedAgent.getHistory() });
+      res.json({ messages: [selectedAgent.getLatestMessage()] });
       return;
     }
 

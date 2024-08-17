@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // Enable latest features
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "ESNext",
@@ -24,5 +23,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts"
+  ]
 }

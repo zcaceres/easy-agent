@@ -1,4 +1,4 @@
-import UI from "lib/ui";
+import UI from "lib/cli/ui";
 import type Agent from "lib/agent";
 import type AgentRegistry from "./agent-registry";
 

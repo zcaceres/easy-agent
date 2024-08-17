@@ -1,6 +1,6 @@
 {
   "name": "ai-agents",
-  "module": "lib/cli.ts",
+  "module": "lib/cli/cli.ts",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
@@ -17,14 +17,12 @@
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "start": "bun run lib/cli.ts",
-    "cli": "bun run lib/cli.ts",
-    "serve": "bun run lib/server.ts",
+    "start": "bun run lib/cli/cli.ts",
+    "cli": "bun run lib/cli/cli.ts",
+    "server": "bun run lib/server/server.ts",
     "build": "tsc --outDir dist --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "mkdir -p session-log && mkdir -p logs"
-  },
-  "bin": {
-    "agents": "./dist/lib/cli.js"
+    "postinstall": "mkdir -p session-log && mkdir -p logs",
+    "check-types": "tsc --noEmit --project tsconfig.json "
   }
 }

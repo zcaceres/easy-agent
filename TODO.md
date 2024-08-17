@@ -8,3 +8,4 @@ Future:
   not yet released in their SDK
 - Clean up Anthropic lifecycle process function a bit
 - refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
+- for some reason TSC still includes anthropicSDK type errors in my checks
