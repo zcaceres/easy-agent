@@ -1,5 +1,8 @@
 ## Todo
 
+Next:
+Finish stateful mode
+
 Future:
 
 - Vision

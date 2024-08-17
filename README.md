@@ -61,8 +61,10 @@ Interact with available agents with:
 
 ```sh
 # POST
-curl -X POST http://localhost:3000 -d '{ "agentName": "summarizer", "message": "hi there", "stateful": true }' -H 'Content-Type: application/json'
+curl -X POST http://localhost:3000 -d '{ "agentName": "summarizer", "message": "hi there" }' -H 'Content-Type: application/json'
 ```
+
+Currently the server only supports stateless agents. This means it wil send back the entire history of the conversation on each request/response cycle. Coming soon: stateful sessions.
 
 ## How to Make an Agent
 
