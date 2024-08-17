@@ -9,3 +9,16 @@ Future:
 - Clean up Anthropic lifecycle process function a bit
 - refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
 - for some reason TSC still includes anthropicSDK type errors in my checks
+- handle 429 issues
+
+```
+429 {"type":"error","error":{"type":"rate_limit_error","message":"Number of request tokens has exceeded your per-minute rate limit (https://docs.anthropic.com/en/api/rate-limits); see the response headers for current usage. Please reduce the prompt length or the maximum tokens requested, or try again later. You may also contact sales at https://www.anthropic.com/contact-sales to discuss your options for a rate limit increase."}}
+2 | import { castToError } from "./core.mjs";
+3 | export class AnthropicError extends Error {
+4 | }
+5 | export class APIError extends AnthropicError {
+6 |     constructor(status, error, message, headers) {
+7 |         super(`${APIError.makeMessage(status, error, message)}`);
+                          ^
+error: 429 {"type":"error","error":{"type":"rate_limit_error","message":"Number of request tokens has exceeded your per-minute rate limit (https://docs.anthropic.com/en/api/rate-limits); see the response headers for current usage. Please reduce the prompt length or the maximum tokens requested, or try again later. You may also contact sales at https://www.anthropic.com/contact-sales to discuss your options for a rate limit increase."}}
+```

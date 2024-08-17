@@ -59,7 +59,7 @@ app.post(
     await selectedAgent.start(message);
 
     if (stateful) {
-      // send back only the last response
+      // send back only the latest response, since the expectation is that the caller will continue to send messages to the same agent and is managing state on client-side
       res.json({ messages: [selectedAgent.getLatestMessage()] });
       return;
     }
