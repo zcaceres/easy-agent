@@ -1,6 +1,6 @@
 import fs from "fs";
 import config from "lib/config";
-import type { SessionHistoryEntry } from "definitions";
+import type { HistoryEntry } from "definitions";
 
 class DebugLogger {
   private logFilePath: string;
@@ -16,7 +16,7 @@ class DebugLogger {
     }
   }
 
-  history(messageHistory: SessionHistoryEntry[]) {
+  history(messageHistory: HistoryEntry[]) {
     fs.writeFileSync(
       this.messageHistoryFilePath,
       JSON.stringify(messageHistory, null, 2)

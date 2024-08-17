@@ -1,5 +1,11 @@
 import type Agent from "lib/agent";
 
+/**
+ * Represents a cache for storing instances of agents.
+ * The cache allows us to maintain state across a given session.
+ *
+ * @SEE `server.ts` for usage
+ */
 export default class AgentCache {
   private cache: Map<string, Agent> = new Map();
 

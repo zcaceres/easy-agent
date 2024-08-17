@@ -22,7 +22,7 @@
     "serve": "bun run lib/server.ts",
     "build": "tsc --outDir dist --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "mkdir -p session-history && mkdir -p logs"
+    "postinstall": "mkdir -p session-log && mkdir -p logs"
   },
   "bin": {
     "agents": "./dist/lib/cli.js"

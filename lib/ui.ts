@@ -1,6 +1,6 @@
 import colors from "colors";
 import * as readline from "readline";
-import type { SessionHistoryEntry } from "definitions";
+import type { HistoryEntry } from "definitions";
 import Logger from "lib/logger";
 
 export default class UI {
@@ -67,7 +67,7 @@ export default class UI {
     console.error(colors.red(txt));
   }
 
-  static render(msg: SessionHistoryEntry) {
+  static render(msg: HistoryEntry) {
     for (const content of msg.content) {
       if (content.type === "text") {
         if (msg.role === "assistant") {

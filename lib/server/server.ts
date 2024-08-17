@@ -4,8 +4,9 @@ import registeredAgents from "start-here";
 import AgentSelector from "../agent-selector";
 import type { ServerAgentRequest } from "definitions";
 import AgentCache from "./agent-cache";
+import type Agent from "lib/agent";
 
-const CACHE = AgentCache.create();
+const CachedAgentInstances = AgentCache.create();
 
 const app = express();
 const port = 3000;
@@ -28,25 +29,38 @@ app.post("/", async (req: Request<{}, {}, ServerAgentRequest>, res) => {
     return res.status(400).json({ message: "Message is required" });
   }
 
-  let agent = await AgentSelector.fromAgentName(agentName, registeredAgents);
+  let selectedAgent = AgentSelector.fromAgentName(agentName, registeredAgents);
 
-  if (!agent) {
+  if (!selectedAgent) {
     return res
       .status(404)
       .json({ message: `Agent with name ${agentName} not found.` });
   }
 
+  let cachedAgent = null;
   if (stateful) {
-    let cachedAgent = CACHE.get(agentName);
-    if (cachedAgent) {
-      CACHE.set(agentName, freshAgent);
+    cachedAgent = CachedAgentInstances.get(agentName);
+
+    if (!cachedAgent) {
+      CachedAgentInstances.set(agentName, selectedAgent);
     }
-  } else {
+
+    selectedAgent = CachedAgentInstances.get(agentName) as Agent;
   }
 
-  await agent.start(message);
+  await selectedAgent.start(message);
 
-  res.json({ message: "Hello, world!" });
+  // the goal here would be to send the message to the agent
+  // wait for all tools to run
+  // get the response
+
+  if (stateful) {
+    // send back only the response
+    res.json({ message: "Hello, world!" });
+    return;
+  }
+
+  // send back the entire history of the conversation
 });
 
 app.listen(port, () => {

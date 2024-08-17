@@ -1,4 +1,4 @@
-import agentRegistry from "../start-here";
+import agentRegistry from "start-here";
 import AgentSelector from "lib/agent-selector";
 import UI from "lib/ui";
 

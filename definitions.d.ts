@@ -8,7 +8,7 @@ import type { Model } from "@anthropic-ai/sdk/src/resources/messages.js";
 
 export type SourceType = "user" | "assistant";
 
-export type SessionHistoryEntry = {
+export type HistoryEntry = {
   role: SourceType;
   content: Array<TextBlockParam | ToolUseBlockParam | ToolResultBlockParam>;
 };

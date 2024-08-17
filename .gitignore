@@ -174,8 +174,7 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
-session-history
-
+session-log
 dist
 sample-data
 scratch.md

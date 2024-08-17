@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import type { SessionHistoryEntry } from "definitions";
+import type { HistoryEntry } from "definitions";
 import config from "lib/config";
 
-export default class SessionHistory {
+export default class SessionLog {
   filePath;
 
   constructor() {
@@ -15,7 +15,7 @@ export default class SessionHistory {
       "--" +
       new Date().toLocaleTimeString();
 
-    const filePath = `${config.SESSION_HISTORY_DIR_PATH_DEFAULT}/SESSION-${todayDateHumanReadable}.md`;
+    const filePath = `${config.SESSION_LOG_DIR_PATH_DEFAULT}/SESSION-LOG-${todayDateHumanReadable}.md`;
 
     fs.writeFileSync(
       filePath,
@@ -25,7 +25,7 @@ export default class SessionHistory {
     return filePath;
   }
 
-  append(entry: SessionHistoryEntry) {
+  append(entry: HistoryEntry) {
     let markdown = "";
     if (entry.role === "user") {
       entry.content.forEach((item) => {
@@ -52,6 +52,6 @@ export default class SessionHistory {
   }
 
   static create() {
-    return new SessionHistory();
+    return new SessionLog();
   }
 }

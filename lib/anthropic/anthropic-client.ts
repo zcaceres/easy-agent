@@ -1,20 +1,20 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-import type { AgentConfig, LLMClient, SessionHistoryEntry } from "definitions";
+import type { AgentConfig, LLMClient, HistoryEntry } from "definitions";
 import config from "lib/config";
 import UI from "lib/ui";
 import ToolRunner from "lib/tool-runner";
-import SessionHistory from "lib/session-history";
+import SessionLog from "lib/session-log";
 import Logger from "lib/logger";
 import AnthropicParser from "lib/anthropic/anthropic-parser";
 import type ToolRegistry from "lib/tool-registry";
 
 class AnthropicClient implements LLMClient {
   client: Anthropic;
-  messageHistory: SessionHistoryEntry[];
   agentConfig: AgentConfig;
   tools: ToolRegistry;
-  sessionHistory: SessionHistory;
+  messageHistory: HistoryEntry[];
+  sessionHistory: SessionLog;
 
   private constructor({
     agentConfig,
@@ -37,11 +37,11 @@ class AnthropicClient implements LLMClient {
     });
 
     this.tools = tools;
-    this.messageHistory = [] as SessionHistoryEntry[];
-    this.sessionHistory = SessionHistory.create();
+    this.messageHistory = [] as HistoryEntry[];
+    this.sessionHistory = SessionLog.create();
   }
 
-  private addToMessageHistory(message: SessionHistoryEntry) {
+  private addToMessageHistory(message: HistoryEntry) {
     const lastEntry = this.messageHistory[this.messageHistory.length - 1];
 
     // Anthropic breaks if you send two messages back to back with the same `role`.
@@ -110,7 +110,7 @@ class AnthropicClient implements LLMClient {
     text: string;
     toolUseRequests: Anthropic.Messages.ToolUseBlock[];
   }) {
-    const modelResponseBlock: SessionHistoryEntry = {
+    const modelResponseBlock: HistoryEntry = {
       role: "assistant",
       content: [],
     };
@@ -172,32 +172,6 @@ class AnthropicClient implements LLMClient {
     }
   }
 
-  async start(userInput?: string) {
-    if (config.DEBUG_MODE) {
-      Logger.debug("Sending message to Claude...");
-    }
-
-    if (!userInput) {
-      return;
-    }
-
-    this.addToMessageHistory({
-      role: "user",
-      content: [
-        {
-          type: "text",
-          text: userInput,
-        },
-      ],
-    });
-
-    if (this.agentConfig.mode === "stream") {
-      await this.stream();
-    } else {
-      await this.message();
-    }
-  }
-
   private async message() {
     const msg = await this.client.messages.create({
       messages: this.messageHistory,
@@ -237,6 +211,36 @@ class AnthropicClient implements LLMClient {
         "Stream ended with tool use, sending results back without user input..."
       );
       await this.stream();
+    }
+  }
+
+  getHistory() {
+    return this.messageHistory;
+  }
+
+  async start(userInput?: string) {
+    if (config.DEBUG_MODE) {
+      Logger.debug("Sending message to Claude...");
+    }
+
+    if (!userInput) {
+      return;
+    }
+
+    this.addToMessageHistory({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: userInput,
+        },
+      ],
+    });
+
+    if (this.agentConfig.mode === "stream") {
+      await this.stream();
+    } else {
+      await this.message();
     }
   }
 
