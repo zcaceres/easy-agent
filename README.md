@@ -50,8 +50,7 @@ bun start
 export default [
   // ...a bunch of sample agents
   Agent.create({
-    name: "Agent 007",
-    // more configuration if you want
+    name: "Agent 007"
   });
 ];
 ```
@@ -103,20 +102,21 @@ export default [
 ];
 ```
 
+You're done! Your Agent will now use the tool intelligently, based on the prompt and conversation.
+
 ## Other Examples
 
 ```ts
 // An Agent with a custom prompt and tool
 export default Agent.create({
   name: "Summarizer",
-  prompt: "You summarize text concisely and accurately.",
+  prompt: "You summarize text concisely and accurately based on the url I give you.",
   tools: [FetchHTML],
 });
 
 // An Agent that uses streaming mode and model and token override
 export default Agent.create({
   name: "Streaming",
-  tools: [],
   mode: "stream",
   model: "claude-3-haiku-20240307"
   maxTokens: 3600
