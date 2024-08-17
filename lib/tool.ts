@@ -1,0 +1,43 @@
+import type { ToolArg, ToolConfig, ToolDefinition } from "definitions";
+
+class Tool {
+  definition: ToolDefinition;
+  private fn: (...args: any[]) => Promise<string>;
+
+  private constructor({ name, description, inputs, fn }: ToolConfig) {
+    this.definition = {
+      name: name,
+      description: description,
+      input_schema: {
+        type: "object",
+        properties: this.generateInputSchema(inputs),
+        required: inputs
+          .filter((input) => input.required)
+          .map((input) => input.name),
+      },
+    };
+    this.fn = fn;
+  }
+
+  private generateInputSchema(toolInputs: ToolArg[]) {
+    const properties: Record<string, any> = {};
+    toolInputs.forEach((input) => {
+      properties[input.name] = {
+        type: input.type,
+        description: input.description,
+      };
+    });
+    return properties;
+  }
+
+  async callFn(...args: any) {
+    const results = await this.fn(...args);
+    return JSON.stringify(results);
+  }
+
+  static create(config: ToolConfig) {
+    return new Tool(config);
+  }
+}
+
+export default Tool;

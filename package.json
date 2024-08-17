@@ -1,0 +1,30 @@
+{
+  "name": "ai-agents",
+  "module": "lib/cli.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^4.17.21",
+    "@types/yargs": "^17.0.33"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.25.2",
+    "colors": "^1.4.0",
+    "express": "^4.19.2",
+    "yargs": "^17.7.2"
+  },
+  "scripts": {
+    "start": "bun run lib/cli.ts",
+    "cli": "bun run lib/cli.ts",
+    "serve": "bun run lib/server.ts",
+    "build": "tsc --outDir dist --project tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "mkdir -p session-history && mkdir -p logs"
+  },
+  "bin": {
+    "agents": "./dist/lib/cli.js"
+  }
+}
