@@ -110,7 +110,8 @@ You're done! Your Agent will now use the tool intelligently, based on the prompt
 // An Agent with a custom prompt and tool
 export default Agent.create({
   name: "Summarizer",
-  prompt: "You summarize text concisely and accurately based on the url I give you.",
+  prompt:
+    "You summarize text concisely and accurately based on the url I give you.",
   tools: [FetchHTML],
 });
 
@@ -118,8 +119,8 @@ export default Agent.create({
 export default Agent.create({
   name: "Streaming",
   mode: "stream",
-  model: "claude-3-haiku-20240307"
-  maxTokens: 3600
+  model: "claude-3-haiku-20240307",
+  maxTokens: 3600,
 });
 
 // You'd now register these agents in `start-here.ts`
