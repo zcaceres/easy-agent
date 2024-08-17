@@ -1,19 +1,18 @@
 import UI from "lib/ui";
 import type Agent from "lib/agent";
+import type AgentRegistry from "./agent-registry";
 
 export default class AgentSelector {
-  static async fromCLI(registeredAgents: Agent[]): Promise<Agent> {
-    const agentNames = registeredAgents.map((agent) => agent.name);
+  static async fromCLI(registeredAgents: AgentRegistry): Promise<Agent> {
     const selectedAgentName = await UI.promptForUserInput(
-      `Select an Agent:\n${agentNames
+      `Select an Agent:\n${registeredAgents
+        .list()
         .map((name) => `- ${name}`)
         .join("\n")}\n\n`
     );
 
-    let normalizedName = selectedAgentName.trim().toLowerCase();
-    const selectedAgent = registeredAgents.find(
-      (agent) => agent.name.toLowerCase() === normalizedName
-    );
+    const selectedAgent = registeredAgents.get(selectedAgentName);
+
     if (!selectedAgent) {
       UI.red(`Invalid selection: ${selectedAgentName}.`);
       return this.fromCLI(registeredAgents);
@@ -31,16 +30,14 @@ export default class AgentSelector {
 
   static async fromAgentName(
     selectedAgentName: string,
-    registeredAgents: Agent[]
+    registeredAgents: AgentRegistry
   ) {
-    let normalizedName = selectedAgentName.trim().toLowerCase();
-    const selectedAgent = registeredAgents.find(
-      (agent) => agent.name.toLowerCase() === normalizedName
-    );
+    const selectedAgent = registeredAgents.get(selectedAgentName);
+
     if (!selectedAgent) {
       throw new Error(`Invalid selection: ${selectedAgentName}.`);
     }
 
-    return selectedAgent;
+    return registeredAgents.get(selectedAgentName);
   }
 }

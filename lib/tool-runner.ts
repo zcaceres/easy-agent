@@ -1,9 +1,9 @@
 import type { ToolUseBlock } from "@anthropic-ai/sdk/resources/index.mjs";
-import type { ToolMap } from "definitions";
+import type ToolRegistry from "./tool-registry";
 
 export default class ToolRunner {
-  static async use(toolUse: ToolUseBlock, callableTools: ToolMap) {
-    const tool = callableTools[toolUse.name];
+  static async use(toolUse: ToolUseBlock, callableTools: ToolRegistry) {
+    const tool = callableTools.get(toolUse.name);
     if (!tool) {
       throw new Error(
         `Unknown tool called: ${

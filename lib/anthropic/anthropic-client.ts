@@ -1,23 +1,19 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-import type {
-  AgentConfig,
-  LLMClient,
-  SessionHistoryEntry,
-  ToolMap,
-} from "definitions";
+import type { AgentConfig, LLMClient, SessionHistoryEntry } from "definitions";
 import config from "lib/config";
 import UI from "lib/ui";
 import ToolRunner from "lib/tool-runner";
 import SessionHistory from "lib/session-history";
 import Logger from "lib/logger";
 import AnthropicParser from "lib/anthropic/anthropic-parser";
+import type ToolRegistry from "lib/tool-registry";
 
 class AnthropicClient implements LLMClient {
   client: Anthropic;
   messageHistory: SessionHistoryEntry[];
   agentConfig: AgentConfig;
-  tools: ToolMap;
+  tools: ToolRegistry;
   sessionHistory: SessionHistory;
 
   private constructor({
@@ -25,14 +21,14 @@ class AnthropicClient implements LLMClient {
     tools,
   }: {
     agentConfig: AgentConfig;
-    tools: ToolMap;
+    tools: ToolRegistry;
   }) {
     this.agentConfig = agentConfig;
     const apiKey = config.ANTHROPIC_API_KEY;
 
     if (!apiKey) {
       throw new Error(
-        "Missing apiKey. Add it to the config.ts file or to your environment variables as ANTHROPIC_API_KEY"
+        "Missing API key. Add it to the config.ts file or to your environment variables as ANTHROPIC_API_KEY"
       );
     }
 
@@ -65,7 +61,7 @@ class AnthropicClient implements LLMClient {
 
   private async processToolUse(
     toolUseBlocks: Anthropic.Messages.ToolUseBlock[],
-    tools: ToolMap
+    tools: ToolRegistry
   ) {
     const toolUseResults = [];
 
@@ -249,7 +245,7 @@ class AnthropicClient implements LLMClient {
     tools,
   }: {
     agentConfig: AgentConfig;
-    tools: ToolMap;
+    tools: ToolRegistry;
   }) {
     return new AnthropicClient({ agentConfig, tools });
   }

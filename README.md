@@ -8,7 +8,7 @@ Currently supports Anthropic's Claude family of models.
 
 ## Why?
 
-- There's a LOT of plumbing in AI SDKs. You spend more time parsing JSON than iterating on your agent.
+- There's too much plumbing in AI SDKs. You spend more time parsing JSON than iterating on your agent.
 - TS > Python if you're already working in web apps.
 - You only need two concepts to make an awesome AI Agent: Agents and Tools. This package hides everything else and focuses on a good experience with those two concepts.
 
@@ -20,9 +20,11 @@ Currently supports Anthropic's Claude family of models.
 - Supports message & stream modes
 - Vigorous type-safety
 - A few fun pre-baked Agents
-- CLI and Server mode (Server mode coming soon)
+- Use Agents in either CLI and Server Modes
 
 ## Setup
+
+> Make sure you have an ANTHROPIC_API_KEY key in your environment.
 
 Install:
 
@@ -36,7 +38,31 @@ Run:
 bun start
 ```
 
-> Make sure you have an ANTHROPIC_API_KEY key in your environment.
+## Starting in CLI Mode
+
+CLI Mode allows you to interact with your agents in a simple command-line interface.
+
+CLI mode is the default mode. Start it with `bun run start` or `bun run cli`.
+
+## Starting in Server Mode
+
+Some users would rather interact with an agent using HTTP, rather than CLI. Server Mode opens an Express server on localhost:3000
+
+Start it with `bun run server`.
+
+See available agents with:
+
+```sh
+# GET
+curl http://localhost:3000
+```
+
+Interact with available agents with:
+
+```sh
+# POST
+curl -X POST http://localhost:3000 -d '{ "agentName": "summarizer", "message": "hi there", "stateful": true }' -H 'Content-Type: application/json'
+```
 
 ## How to Make an Agent
 

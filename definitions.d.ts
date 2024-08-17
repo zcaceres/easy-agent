@@ -66,8 +66,35 @@ export type ToolArg = {
   required?: boolean;
 };
 
-export type ToolMap = Record<string, Tool>;
+export type ToolMap = Map<NormalizedName, Tool>;
+export type AgentMap = Map<NormalizedName, Agent>;
 
 export interface LLMClient {
   start: (input: string) => Promise<void>;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      context: Context;
+    }
+  }
+}
+
+type Distinct<T, DistinctName> = T & { __TYPE__: DistinctName };
+
+export type NormalizedName = Distinct<string, "NormalizedName">;
+
+export type ServerAgentRequest = {
+  agentName: string;
+  message: string;
+  stateful?: boolean;
+};
+
+export abstract class Registry {
+  abstract list(): NormalizedName[];
+  abstract exists(itemName: string): boolean;
+  abstract get(itemName: string): Agent | null;
+
+  static create(itemsToRegister: Agent[] | Tool[]): Registry {}
 }

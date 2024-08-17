@@ -1,14 +1,19 @@
 import config from "lib/config";
-import type { AgentConfig, AgentInitializer, ToolMap } from "definitions";
+import type {
+  AgentConfig,
+  AgentInitializer,
+  NormalizedName,
+} from "definitions";
+import NormalizeName from "lib/name-normalizer";
 
 import AnthropicClient from "lib/anthropic/anthropic-client";
-import Logger from "lib/logger";
+import ToolRegistry from "./tool-registry";
 
 class Agent {
-  name: string;
+  name: NormalizedName;
   config: AgentConfig;
   client: AnthropicClient;
-  tools: ToolMap;
+  tools: ToolRegistry;
   start: (input: string) => Promise<void>;
 
   constructor({
@@ -20,7 +25,7 @@ class Agent {
     mode,
     maxTokens,
   }: AgentInitializer) {
-    this.name = name;
+    this.name = NormalizeName(name);
     this.config = {
       prompt: prompt || "",
       tools: tools || [],
@@ -29,14 +34,7 @@ class Agent {
       mode: mode || "message",
       maxTokens: maxTokens || config.MAX_MODEL_TOKENS_DEFAULT,
     };
-    this.tools = {};
-    if (tools && tools.length > 0) {
-      // It makes it easier to call the tools downstream to have them in a map...
-      tools.forEach((tool) => {
-        Logger.debug(`Tool: ${tool.definition}`);
-        this.tools[tool.definition.name] = tool;
-      });
-    }
+    this.tools = ToolRegistry.create(this.config.tools);
     this.client = AnthropicClient.create({
       agentConfig: this.config,
       tools: this.tools,

@@ -7,18 +7,19 @@ import Translator from "agents/sample/translator";
 import Lawyer from "agents/sample/lawyer";
 import ResearchAssistant from "agents/sample/research-assistant";
 import Summarizer from "agents/sample/summarizer";
+import AgentRegistry from "lib/agent-registry";
 
 /**
  * WELCOME!
  *
- * All agents listed below will be available for selection in the CLI.
+ * All agents listed below will be available for selection from the CLI in CLI Mode and from the GET endpoint in `server.ts` in Server mode.
  *
- * To define a new agent, create a new file in the `agents` directory and export it here. (Example in your-agent-here.ts)
+ * To define a new agent, create a new file in the `agents` directory and export it here. (Example in your-agent-here.ts) You can also define them in-line below using Agent.create().
  *
- * To define new tools, create a new file in the `tools` directory and export it here. (Example in your-tool-here.ts)
+ * To define new tools, create a new file in the `tools` directory and export it here. (Example in your-tool-here.ts). You can also define them in-line below in using Tool.create() and registering them in the Agents `tools` property.
  */
 
-export default [
+export default AgentRegistry.create([
   // Add your agent (see your-agent-here.ts)!
   DiceRoller(),
   Librarian(),
@@ -29,5 +30,5 @@ export default [
   ResearchAssistant(),
   Lawyer(),
   Summarizer(),
-  // Remove sample agents you don't want to use.
-];
+  // Remove sample agents above that you don't want available.
+]);
