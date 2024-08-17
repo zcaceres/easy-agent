@@ -15,6 +15,7 @@ Currently supports Anthropic's Claude family of models.
 ## Features
 
 - Hides configuration and plumbing behind simple classes (`Agent` and `Tool`) with one and only one type-safe way to create them.
+- Start making a custom Agent with one function call in one file (`start-here.ts`)
 - Sensible defaults (which you can easily override)
 - Automatic handling of the tool request/response cycle
 - Supports message & stream modes
@@ -46,7 +47,7 @@ CLI mode is the default mode. Start it with `bun run start` or `bun run cli`.
 
 ## Starting in Server Mode
 
-Some users would rather interact with an agent using HTTP, rather than CLI. Server Mode opens an Express server on localhost:3000
+Server Mode opens an Express server on localhost:3000 which allows users to interact with agents over HTTP.
 
 Start it with `bun run server`.
 
@@ -64,7 +65,9 @@ Interact with available agents with:
 curl -X POST http://localhost:3000 -d '{ "agentName": "summarizer", "message": "hi there" }' -H 'Content-Type: application/json'
 ```
 
-Currently the server only supports stateless agents. This means it wil send back the entire history of the conversation on each request/response cycle. Coming soon: stateful sessions.
+Currently Server Mode **only supports stateless agents**. This means it will send back the entire history of the conversation on each request/response cycle.
+
+> Coming soon: stateful sessions.
 
 ## How to Make an Agent
 
