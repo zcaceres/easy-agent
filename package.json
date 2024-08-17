@@ -25,7 +25,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",
-    "check-for-api-key": "bun run check-for-api-key.sh.ts",
+    "check-for-api-key": "bun run check-for-api-key.ts",
     "prepare": "husky"
   }
 }
