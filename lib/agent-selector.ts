@@ -11,7 +11,10 @@ export default class AgentSelector {
         .join("\n")}\n\n`
     );
 
-    const selectedAgent = registeredAgents.get(selectedAgentName);
+    const selectedAgent = this.fromAgentName(
+      selectedAgentName,
+      registeredAgents
+    );
 
     if (!selectedAgent) {
       UI.red(`Invalid selection: ${selectedAgentName}.`);
@@ -19,16 +22,12 @@ export default class AgentSelector {
     }
 
     UI.green(`Selected agent: ${selectedAgent.name}`);
-    UI.green(
-      `Available tools: ${selectedAgent.config.tools
-        .map((tool) => tool.definition.name)
-        .join(", ")}`
-    );
+    UI.green(`Available tools: ${selectedAgent.tools.list().join(", ")}`);
 
     return selectedAgent;
   }
 
-  static async fromAgentName(
+  static fromAgentName(
     selectedAgentName: string,
     registeredAgents: AgentRegistry
   ) {
