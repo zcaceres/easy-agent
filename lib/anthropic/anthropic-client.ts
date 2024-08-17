@@ -8,12 +8,13 @@ import SessionLog from "lib/session-log";
 import Logger from "lib/logger";
 import AnthropicParser from "lib/anthropic/anthropic-parser";
 import type ToolRegistry from "lib/tool-registry";
+import MessageHistory from "lib/message-history";
 
 class AnthropicClient implements LLMClient {
   client: Anthropic;
   agentConfig: AgentConfig;
   tools: ToolRegistry;
-  messageHistory: HistoryEntry[];
+  messageHistory: MessageHistory;
   sessionHistory: SessionLog;
 
   private constructor({
@@ -37,26 +38,22 @@ class AnthropicClient implements LLMClient {
     });
 
     this.tools = tools;
-    this.messageHistory = [] as HistoryEntry[];
+    this.messageHistory = MessageHistory.from([]);
     this.sessionHistory = SessionLog.create();
   }
 
   private addToMessageHistory(message: HistoryEntry) {
-    const lastEntry = this.messageHistory[this.messageHistory.length - 1];
+    // const lastEntry = this.messageHistory.latest();
 
     // Anthropic breaks if you send two messages back to back with the same `role`.
     // So if there's a case where the last message is the same role as the current message that we're adding to the history, we'll just append it to the content blocks of the last message instead.
-    if (lastEntry && lastEntry.role === message.role) {
-      lastEntry.content.push(...message.content);
-      return;
-    } else {
-      this.messageHistory.push(message);
-    }
+
+    this.messageHistory.append(message);
     this.sessionHistory.append(message);
 
     Logger.debug(message);
 
-    if (config.DEBUG_MODE) Logger.history(this.messageHistory);
+    if (config.DEBUG_MODE) Logger.history(this.messageHistory.get());
   }
 
   private async processToolUse(
@@ -193,7 +190,7 @@ class AnthropicClient implements LLMClient {
   private async stream() {
     const stream = this.client.messages
       .stream({
-        messages: this.messageHistory,
+        messages: this.messageHistory.get(),
         model: this.agentConfig.model,
         system: this.agentConfig.prompt,
         max_tokens: this.agentConfig.maxTokens,
@@ -212,10 +209,6 @@ class AnthropicClient implements LLMClient {
       );
       await this.stream();
     }
-  }
-
-  getHistory() {
-    return this.messageHistory;
   }
 
   async start(userInput?: string) {

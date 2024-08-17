@@ -42,6 +42,14 @@ class Agent {
     this.start = this.client.start.bind(this.client);
   }
 
+  getHistory() {
+    return this.client.messageHistory.get();
+  }
+
+  getLatestMessage() {
+    return this.client.messageHistory.latest();
+  }
+
   static create({
     name,
     prompt,
