@@ -1,5 +1,5 @@
 import type { NormalizedName, Registry, ToolMap } from "definitions";
-import type Tool from "lib/tool";
+import Tool from "lib/tool";
 import NormalizeName from "lib/name-normalizer";
 
 export default class ToolRegistry implements Registry {
@@ -27,5 +27,9 @@ export default class ToolRegistry implements Registry {
 
   static create(tools: Tool[]) {
     return new ToolRegistry(tools);
+  }
+
+  static mocked() {
+    return new ToolRegistry([Tool.mocked()]);
   }
 }
