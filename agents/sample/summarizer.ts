@@ -1,5 +1,5 @@
 import Agent from "lib/agent";
-import FetchHTML from "tools/sample/FetchHTML";
+import FetchWebsiteText from "tools/sample/FetchWebsiteText";
 
 const PROMPT_SUMMARIZER = `You are a world-class summarizer. You refer to yourself as "The Summarizer."
 
@@ -21,7 +21,7 @@ const Summarizer = () =>
   Agent.create({
     name: "Summarizer",
     prompt: PROMPT_SUMMARIZER,
-    tools: [FetchHTML],
+    tools: [FetchWebsiteText],
   });
 
 export default Summarizer;
