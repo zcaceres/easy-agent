@@ -38,6 +38,22 @@ class Tool {
   static create(config: ToolConfig) {
     return new Tool(config);
   }
+
+  static mocked() {
+    return new Tool({
+      name: "mockedTool",
+      description: "A mocked tool",
+      inputs: [
+        {
+          name: "mockedInput",
+          type: "string",
+          description: "A mocked input",
+          required: true,
+        },
+      ],
+      fn: async () => "mocked result",
+    });
+  }
 }
 
 export default Tool;
