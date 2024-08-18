@@ -8,9 +8,9 @@ export default class ToolRunner {
       throw new Error(
         `Unknown tool called: ${
           toolUse.name
-        }. You need to register it on the agent for it to be used. Available tools: ${Object.keys(
-          callableTools
-        ).join(", ")}`
+        }. You need to register it on the agent for it to be used. Available tools: ${callableTools
+          .list()
+          .join(", ")}`
       );
     }
     return tool.callFn(toolUse.input);
