@@ -6,7 +6,7 @@ class DebugLogger {
   private logFilePath: string;
   private messageHistoryFilePath: string;
 
-  constructor() {
+  private constructor() {
     this.logFilePath = config.LOG_FILE_PATH_DEFAULT;
     this.messageHistoryFilePath = config.MESSAGE_HISTORY_FILE_PATH_DEFAULT;
     if (config.DEBUG_MODE) {
@@ -35,6 +35,10 @@ class DebugLogger {
   private clear() {
     fs.writeFileSync(this.logFilePath, "");
   }
+
+  static create() {
+    return new DebugLogger();
+  }
 }
 
-export default new DebugLogger();
+export default DebugLogger.create();

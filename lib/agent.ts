@@ -8,6 +8,7 @@ import NormalizeName from "lib/name-normalizer";
 
 import AnthropicClient from "lib/anthropic/anthropic-client";
 import ToolRegistry from "./tool-registry";
+import Tool from "./tool";
 
 class Agent {
   name: NormalizedName;
@@ -67,6 +68,17 @@ class Agent {
       model,
       mode,
       maxTokens,
+    });
+  }
+
+  static mocked() {
+    return new Agent({
+      name: "mocked",
+      prompt: "mocked",
+      tools: [Tool.mocked()],
+      cacheOptions: [],
+      model: "mocked",
+      maxTokens: 1,
     });
   }
 }

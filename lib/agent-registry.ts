@@ -1,5 +1,5 @@
 import type { AgentMap, NormalizedName, Registry } from "definitions";
-import type Agent from "lib/agent";
+import Agent from "lib/agent";
 import NormalizeName from "lib/name-normalizer";
 
 export default class AgentRegistry implements Registry {
@@ -27,5 +27,9 @@ export default class AgentRegistry implements Registry {
 
   static create(agents: Agent[]) {
     return new AgentRegistry(agents);
+  }
+
+  static mocked() {
+    return new AgentRegistry([Agent.mocked()]);
   }
 }
