@@ -11,7 +11,6 @@ A very simple Typescript framework to build tool-wielding AI Agents.
 - **Simple**: There's too much plumbing and setup in vanilla AI SDKs. You spend more time parsing JSON than iterating on your agent.
 - **Typescript First**: TS > Python if you're already working in web apps.
 - **Minimal**: You only need two concepts to make an awesome AI Agent: Agents and Tools. This package hides everything else and focuses on a good experience with those two concepts.
-- **Fast Time to First Prompt**: Get an AI agent running in a few lines of code so you can focus on making the agent better, not other disctractions.
 
 ## Features
 
@@ -75,6 +74,23 @@ Server Mode runs an Express server, allowing interaction with agents via HTTP re
 Note: Server Mode currently supports stateless interactions only. Each request/response is independent.
 
 ## How to Make an Agent
+
+The simplest possible way to make an agent is to open `start-here.ts` and add the following:
+
+```typescript
+export default AgentRegistry.create([
+  // ... some sample agents here
+  new Agent({
+    name: "Dad Joke Agent",
+    prompt: "I tell Dad Jokes and only Dad Jokes"
+  })
+])
+
+```
+
+Now type `bun start` and `dad-joke-agent` will be available to use.
+
+For more advanced use cases, you can follow patterns in the `agents` and `tools` directories:
 
 1. Create a new file in the `agents` directory, e.g., `agents/my-agent.ts`:
 
