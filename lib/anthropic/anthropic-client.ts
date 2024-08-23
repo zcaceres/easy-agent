@@ -1,23 +1,25 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 import type { AgentConfig, LLMClient, HistoryEntry } from "definitions";
-import config from "lib/config";
+import globals from "lib/global-config";
 import UI from "lib/cli/ui";
 import ToolRunner from "lib/tool-runner";
 import SessionLog from "lib/session-log";
 import Logger from "lib/logger";
 import AnthropicParser from "lib/anthropic/anthropic-parser";
-import type ToolRegistry from "lib/tool-registry";
+import ToolRegistry from "lib/tool-registry";
 import MessageHistory from "lib/message-history";
 import Tool from "lib/tool";
 import AnthropicMsgClientConfigurator from "lib/anthropic/anthropic-msg-client-configurator";
+import AnthropicPromptCache from "lib/anthropic/anthropic-prompt-cache";
 
 class AnthropicClient implements LLMClient {
   anthropic: Anthropic;
-  agentConfig: AgentConfig;
+  baseConfig: AgentConfig;
   tools: ToolRegistry;
   messageHistory: MessageHistory;
   sessionHistory: SessionLog;
+  promptCache: AnthropicPromptCache;
 
   private constructor({
     agentConfig,
@@ -26,19 +28,20 @@ class AnthropicClient implements LLMClient {
     agentConfig: AgentConfig;
     tools: ToolRegistry;
   }) {
-    this.agentConfig = agentConfig;
-    const apiKey = config.ANTHROPIC_API_KEY;
+    this.baseConfig = agentConfig;
+    const apiKey = globals.ANTHROPIC_API_KEY;
 
     if (!apiKey) {
       throw new Error(
-        "Missing API key. Add it to the config.ts file or to your environment variables as ANTHROPIC_API_KEY",
+        "Missing API key. Add it to the global-config.ts file or to your environment variables as ANTHROPIC_API_KEY",
       );
     }
 
-    this.client = new Anthropic({
     this.anthropic = new Anthropic({
       apiKey,
     });
+
+    this.promptCache = AnthropicPromptCache.create(agentConfig);
 
     this.tools = tools;
     this.messageHistory = MessageHistory.from([]);
@@ -46,8 +49,6 @@ class AnthropicClient implements LLMClient {
   }
 
   private addToMessageHistory(message: HistoryEntry) {
-    // const lastEntry = this.messageHistory.latest();
-
     // Anthropic breaks if you send two messages back to back with the same `role`.
     // So if there's a case where the last message is the same role as the current message that we're adding to the history, we'll just append it to the content blocks of the last message instead.
 
@@ -56,7 +57,7 @@ class AnthropicClient implements LLMClient {
 
     Logger.debug(message);
 
-    if (config.DEBUG_MODE) Logger.history(this.messageHistory.get());
+    if (globals.DEBUG_MODE) Logger.history(this.messageHistory.get());
   }
 
   private async processToolUse(
@@ -155,7 +156,6 @@ class AnthropicClient implements LLMClient {
 
     const toolUseResults = await this.processToolUse(
       toolUseRequests,
-      this.tools
       this.tools,
     );
 
@@ -174,13 +174,18 @@ class AnthropicClient implements LLMClient {
   }
 
   private async message() {
-    const { client, config } = AnthropicMsgClientConfigurator.configure(
+    const { client, config } = AnthropicMsgClientConfigurator.create(
       this.anthropic,
-      this.agentConfig,
+      this.baseConfig,
       this.messageHistory.get(),
     );
 
-    const msg = await client.create(config);
+    Logger.debug({
+      msg: "Created Message Client",
+      config,
+    });
+
+    const msg = client.create(config);
 
     await this.processModelResponse(msg);
 
@@ -193,11 +198,16 @@ class AnthropicClient implements LLMClient {
   }
 
   private async stream() {
-    const { client, config } = AnthropicMsgClientConfigurator.configure(
+    const { client, config } = AnthropicMsgClientConfigurator.create(
       this.anthropic,
-      this.agentConfig,
+      this.baseConfig,
       this.messageHistory.get(),
     );
+
+    Logger.debug({
+      msg: "Created Stream Client",
+      config,
+    });
 
     const stream = client
       .stream(config)
@@ -217,7 +227,7 @@ class AnthropicClient implements LLMClient {
   }
 
   async start(userInput?: string) {
-    if (config.DEBUG_MODE) {
+    if (globals.DEBUG_MODE) {
       Logger.debug("Sending message to Claude...");
     }
 
@@ -235,7 +245,7 @@ class AnthropicClient implements LLMClient {
       ],
     });
 
-    if (this.agentConfig.mode === "stream") {
+    if (this.baseConfig.mode === "stream") {
       await this.stream();
     } else {
       await this.message();

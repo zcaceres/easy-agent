@@ -1,4 +1,4 @@
-import config from "lib/config";
+import globals from "lib/global-config";
 import type {
   AgentConfig,
   AgentInitializer,
@@ -31,9 +31,9 @@ class Agent {
       prompt: prompt || "",
       tools: tools || [],
       cacheOptions: cacheOptions || [],
-      model: model || config.ANTHROPIC_MODEL_DEFAULT,
+      model: model || globals.ANTHROPIC_MODEL_DEFAULT,
       mode: mode || "message",
-      maxTokens: maxTokens || config.MAX_MODEL_TOKENS_DEFAULT,
+      maxTokens: maxTokens || globals.MAX_MODEL_TOKENS_DEFAULT,
     };
     this.tools = ToolRegistry.create(this.config.tools);
     this.client = AnthropicClient.create({

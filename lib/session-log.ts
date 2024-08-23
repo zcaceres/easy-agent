@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import type { HistoryEntry } from "definitions";
-import config from "lib/config";
+import globals from "lib/global-config";
 
 export default class SessionLog {
   filePath;
@@ -15,11 +15,11 @@ export default class SessionLog {
       "--" +
       new Date().toLocaleTimeString();
 
-    const filePath = `${config.SESSION_LOG_DIR_PATH_DEFAULT}/SESSION-LOG-${todayDateHumanReadable}.md`;
+    const filePath = `${globals.SESSION_LOG_DIR_PATH_DEFAULT}/SESSION-LOG-${todayDateHumanReadable}.md`;
 
     fs.writeFileSync(
       filePath,
-      `# Agent Session on ${todayDateHumanReadable}\n\n`
+      `# Agent Session on ${todayDateHumanReadable}\n\n`,
     );
 
     return filePath;

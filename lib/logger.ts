@@ -1,5 +1,5 @@
 import fs from "fs";
-import config from "lib/config";
+import globals from "lib/global-config";
 import type { HistoryEntry } from "definitions";
 
 class DebugLogger {
@@ -7,9 +7,9 @@ class DebugLogger {
   private messageHistoryFilePath: string;
 
   private constructor() {
-    this.logFilePath = config.LOG_FILE_PATH_DEFAULT;
-    this.messageHistoryFilePath = config.MESSAGE_HISTORY_FILE_PATH_DEFAULT;
-    if (config.DEBUG_MODE) {
+    this.logFilePath = globals.LOG_FILE_PATH_DEFAULT;
+    this.messageHistoryFilePath = globals.MESSAGE_HISTORY_FILE_PATH_DEFAULT;
+    if (globals.DEBUG_MODE) {
       console.log("Debug mode enabled. Logging to debug.log");
       console.log("Clearing old logs...");
       this.clear();
@@ -19,12 +19,12 @@ class DebugLogger {
   history(messageHistory: HistoryEntry[]) {
     fs.writeFileSync(
       this.messageHistoryFilePath,
-      JSON.stringify(messageHistory, null, 2)
+      JSON.stringify(messageHistory, null, 2),
     );
   }
 
   debug(message: string | object) {
-    if (!config.DEBUG_MODE) {
+    if (!globals.DEBUG_MODE) {
       return;
     }
 

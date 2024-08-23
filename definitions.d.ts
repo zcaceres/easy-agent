@@ -5,12 +5,18 @@ import type {
 } from "@anthropic-ai/sdk/resources/index.mjs";
 import Tool from "lib/tool";
 import type { Model } from "@anthropic-ai/sdk/src/resources/messages.js";
+import type { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/src/resources/beta/prompt-caching/messages.js";
 
 export type SourceType = "user" | "assistant";
 
 export type HistoryEntry = {
   role: SourceType;
-  content: Array<TextBlockParam | ToolUseBlockParam | ToolResultBlockParam>;
+  content: Array<
+    | TextBlockParam
+    | ToolUseBlockParam
+    | ToolResultBlockParam
+    | PromptCachingBetaTextBlockParam
+  >;
 };
 
 export type CLIArgs = {
@@ -20,7 +26,7 @@ export type CLIArgs = {
   apiKey?: string;
 };
 
-export type CacheOption = "tools" | "system" | "conversation";
+export type CacheOption = "tools" | "system";
 
 export type AgentConfig = {
   prompt: string;
@@ -29,6 +35,21 @@ export type AgentConfig = {
   model: Model;
   mode: TransmissionMode;
   maxTokens: number;
+};
+
+export type AnthropicConfiguredClient = {
+  client:
+    | Anthropic.Beta.PromptCaching.PromptCachingBetaMessage
+    | Anthropic.Messages.Message;
+  config: AnthropicClientConfig;
+};
+
+export type AnthropicClientConfig = {
+  messages: HistoryEntry[];
+  model: Model;
+  system: string | TextBlockParam[] | PromptCachingBetaTextBlockParam[];
+  max_tokens: number;
+  tools: ToolDefinition[];
 };
 
 export type AgentInitializer = Partial<AgentConfig> & {
@@ -49,6 +70,10 @@ export type ToolDefinition = {
       };
     };
     required: string[];
+  };
+} & {
+  cache_control?: {
+    type: "ephemeral";
   };
 };
 
@@ -107,3 +132,8 @@ export abstract class Registry {
 
   static create(itemsToRegister: Agent[] | Tool[]): Registry {}
 }
+
+export type PromptCache = {
+  tools: Tool[];
+  system: PromptCachingBetaTextBlockParam[];
+};

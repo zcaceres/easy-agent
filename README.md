@@ -4,24 +4,26 @@
 
 A very simple Typescript framework to build tool-wielding AI Agents.
 
-Currently supports Anthropic's Claude family of models.
+`easy-agent` is a powerful, lightweight TypeScript framework designed for building AI agents with tool-use capabilities and prompt-caching. It supports Anthropic's Claude family of models.
 
 ## Why?
 
-- There's too much plumbing in AI SDKs. You spend more time parsing JSON than iterating on your agent.
-- TS > Python if you're already working in web apps.
-- You only need two concepts to make an awesome AI Agent: Agents and Tools. This package hides everything else and focuses on a good experience with those two concepts.
+- **Simple**: There's too much plumbing and setup in vanilla AI SDKs. You spend more time parsing JSON than iterating on your agent.
+- **Typescript First**: TS > Python if you're already working in web apps.
+- **Minimal**: You only need two concepts to make an awesome AI Agent: Agents and Tools. This package hides everything else and focuses on a good experience with those two concepts.
+- **Fast Time to First Prompt**: Get an AI agent running in a few lines of code so you can focus on making the agent better, not other disctractions.
 
 ## Features
 
-- Hides configuration and plumbing behind simple classes (`Agent` and `Tool`) with one and only one type-safe way to create them.
-- Start making a custom Agent with one function call in one file (`start-here.ts`)
-- Sensible defaults (which you can easily override)
-- Automatic handling of the tool request/response cycle
+- Hides configuration and plumbing behind two simple typesafe `Agent` and `Tool` classes.
+- Start making a custom Agent with one function call in one file: `start-here.ts`.
+- Sensible defaults which you can easily override
+- Automatically handles the tool request/response cycle
 - Supports message & stream modes
 - Vigorous type-safety
 - A few fun pre-baked Agents
 - Use Agents in either CLI and Server Modes
+- Prompt caching support
 
 ## Setup
 
@@ -47,112 +49,200 @@ CLI mode is the default mode. Start it with `bun run start` or `bun run cli`.
 
 ## Starting in Server Mode
 
-Server Mode opens an Express server on localhost:3000 which allows users to interact with agents over HTTP.
+Server Mode runs an Express server, allowing interaction with agents via HTTP requests.
 
-Start it with `bun run server`.
+1. Start the server:
 
-See available agents with:
+   ```bash
+   bun run server
+   ```
 
-```sh
-# GET
-curl http://localhost:3000
-```
+2. The server will start on `http://localhost:3000`.
 
-Interact with available agents with:
+3. Interact with agents using HTTP requests:
 
-```sh
-# POST
-curl -X POST http://localhost:3000 -d '{ "agentName": "summarizer", "message": "hi there" }' -H 'Content-Type: application/json'
-```
+   - List available agents:
+     ```bash
+     curl http://localhost:3000
+     ```
 
-Currently Server Mode **only supports stateless agents**. This means it will send back the entire history of the conversation on each request/response cycle.
+   - Send a message to an agent:
+     ```bash
+     curl -X POST http://localhost:3000 -H "Content-Type: application/json" \
+          -d '{"agentName": "summarizer", "message": "Summarize this: https://example.com"}'
+     ```
 
-> Coming soon: stateful sessions.
+Note: Server Mode currently supports stateless interactions only. Each request/response is independent.
 
 ## How to Make an Agent
 
-1. Open `start-here.ts`
+1. Create a new file in the `agents` directory, e.g., `agents/my-agent.ts`:
 
-2. Add your agent to the array like so:
+   ```typescript
+   import Agent from "lib/agent";
+   import MyCustomTool from "tools/my-custom-tool";
 
-```ts
-// start-here.ts
+   const MY_PROMPT = `You are a helpful assistant that...`;
 
-export default [
-  // ...a bunch of sample agents
-  Agent.create({
-    name: "Agent 007"
-  });
-];
-```
+   export default Agent.create({
+     name: "MyAgent",
+     prompt: MY_PROMPT,
+     tools: [MyCustomTool],
+     // Optional: customize other settings
+     // mode: "stream",
+     // model: "claude-3-opus-20240229",
+     // maxTokens: 4000,
+     // cacheOptions: ["system", "tools"],
+   });
+   ```
 
-3. You're done! Now you can run `bun run cli` and interact with your agent.
+2. Register your agent in `start-here.ts`:
 
-You can also define Agents in separate modules (to keep things clean) and import them. Just add them to the array and you're good to go.
+   ```typescript
+   import MyAgent from "./agents/my-agent";
+
+   export default [
+     // ... other agents
+     MyAgent,
+   ];
+   ```
+
+3. Your agent is now available in both CLI and Server modes!
+
+To create more complex agents:
+- Add custom tools in the `tools` directory
+- Experiment with different prompts and configurations
+- Use the `cacheOptions` to optimize performance for frequently used contexts
+
+Remember to run `bun run check-types` to ensure type safety when making changes.
 
 ## How to Make a Tool
 
-1. Open up `your-tool-here.ts`
+1. Create a new file in the `tools` directory, e.g., `tools/my-custom-tool.ts`:
 
-2. Fill out the name, description, inputs, and the function you want the tool to call:
+   ```typescript
+   import Tool from "lib/tool";
 
-```ts
-// SecretAgentPhone.ts
-import Tool from "lib/tool";
+   async function fetchWeather(city: string): Promise<string> {
+     // Implement weather fetching logic here
+     return `The weather in ${city} is sunny.`;
+   }
 
-export default Tool.create({
-  name: "secret_agent_phone",
-  description: "Use 007's Secret Agent phone to contact HQ",
-  inputs: [
-    {
-      name: "message",
-      type: "string",
-      description: "A secret message for HQ",
-      required: true,
-    },
-  ],
-  fn: ({ message }: { message: string }) => {
-    encryptedChannelToHQ(`007 Reporting: ${message}`);
-  },
-});
-```
+   export default Tool.create({
+     name: "fetch_weather",
+     description: "Fetch current weather for a given city",
+     inputs: [
+       {
+         name: "city",
+         type: "string",
+         description: "The name of the city",
+         required: true,
+       },
+     ],
+     fn: async ({ city }: { city: string }) => {
+       const weather = await fetchWeather(city);
+       return { weather };
+     },
+   });
+   ```
 
-3. Now import your tool into your agent!
+2. Import and use your tool in an agent:
 
-```ts
-// start-here.ts
+   ```typescript
+   // in agents/weather-agent.ts
+   import Agent from "lib/agent";
+   import FetchWeather from "tools/my-custom-tool";
 
-import SecretAgentPhone from "tools/SecretAgentPhone"
+   export default Agent.create({
+     name: "WeatherAgent",
+     prompt: "You are a helpful weather assistant. Use the fetch_weather tool to provide accurate weather information.",
+     tools: [FetchWeather],
+   });
+   ```
 
-export default [
-  // ...a bunch of sample agents
-  Agent.create({
-    name: "Agent 007",
-    tools: [SecretAgentPhone]
-  });
-];
-```
+3. Register your new agent in `start-here.ts` to make it available. Your agent will not intelligently use the tool.
 
-You're done! Your Agent will now use the tool intelligently, based on the prompt and conversation.
+Tips for creating effective tools:
+- Provide clear, concise descriptions for your tool and its inputs.
+- Handle errors gracefully and return informative error messages.
+- Consider adding type definitions for complex input/output structures.
 
 ## Other Examples
 
-```ts
-// An Agent with a custom prompt and tool
-export default Agent.create({
-  name: "Summarizer",
-  prompt:
-    "You summarize text concisely and accurately based on the url I give you.",
-  tools: [FetchHTML],
-});
+Here are some more advanced examples of agent configurations:
 
-// An Agent that uses streaming mode and model and token override
+### Streaming Agent with Model Override
+
+```typescript
 export default Agent.create({
-  name: "Streaming",
+  name: "StreamingExpert",
+  prompt: "You are an AI that provides real-time analysis of streaming data.",
   mode: "stream",
-  model: "claude-3-haiku-20240307",
-  maxTokens: 3600,
+  model: "claude-3-opus-20240229",
+  maxTokens: 4000,
+  tools: [StreamDataAnalyzer, DataVisualizer],
 });
-
-// You'd now register these agents in `start-here.ts`
 ```
+
+### Multi-Tool Agent with Caching
+
+```typescript
+export default Agent.create({
+  name: "ResearchAssistant",
+  prompt: "You are a research assistant capable of gathering and analyzing information from multiple sources.",
+  tools: [WebSearchTool, PDFExtractor, DataAnalyzer, CitationGenerator],
+  cacheOptions: ["system", "tools"],
+  maxTokens: 8000,
+});
+```
+
+### Specialized Agent with Custom Configuration
+
+```typescript
+export default Agent.create({
+  name: "CodeReviewer",
+  prompt: "You are an expert code reviewer. Analyze code snippets for best practices, potential bugs, and suggest improvements.",
+  tools: [CodeParser, StaticAnalyzer, BenchmarkTool],
+  model: "claude-3-opus-20240229",
+  maxTokens: 16000,
+  cacheOptions: ["system"],
+});
+```
+
+## Prompt Caching
+
+Easy-agent supports Anthropic's prompt caching feature, which can significantly improve response times and reduce token usage for repeated interactions.
+
+### How Caching Works
+
+Prompt caching allows certain parts of the context to be stored on Anthropic's servers, reducing the need to resend this information with each request. In easy-agent, caching is implemented with a focus on efficiency and adherence to Anthropic's limits.
+
+### Caching Order and Priority
+
+1. **System Prompt**: The system prompt is cached first, as it's typically the most static and frequently used part of the context.
+
+2. **Tools**: After the system prompt, tools are cached in the order they are configured in the agent. This ensures that the most important or frequently used tools are prioritized for caching.
+
+### Caching Limits
+
+Anthropic imposes a limit on the number of items that can be cached (currently set to `globals.ANTHROPIC_MAX_PROMPT_CACHE_SIZE`). Easy-agent respects this limit by:
+
+- Caching the system prompt first (if enabled)
+- Caching tools in order until the limit is reached
+- Stopping cache attempts for additional tools once the limit is hit
+
+### Enabling Caching
+
+To enable caching for your agent, use the `cacheOptions` parameter in your agent configuration:
+
+```typescript
+Agent.create({
+  name: "CachedAgent",
+  prompt: "Your prompt here",
+  tools: [Tool1, Tool2, Tool3],
+  cacheOptions: ["system", "tools"],
+  // ... other configurations
+});
+```
+
+This setup will cache both the system prompt and tools, in that order, up to the Anthropic-imposed limit.
