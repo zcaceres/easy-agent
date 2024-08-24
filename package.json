@@ -1,7 +1,12 @@
 {
-  "name": "ai-agents",
-  "module": "lib/cli/cli.ts",
+  "name": "easy-agent",
   "type": "module",
+  "version": "0.1.0",
+  "main": "dist/index.ts",
+  "types": "dist/definitions.d.ts",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/bun": "latest",
     "@types/express": "^4.17.21",
@@ -23,11 +28,12 @@
     "start": "bun run lib/cli/cli.ts",
     "cli": "bun run lib/cli/cli.ts",
     "server": "bun run lib/server/server.ts",
-    "build": "tsc --outDir dist --project tsconfig.json",
+    "build": "bun build --outdir dist --project tsconfig.json",
     "test": "bun test",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",
     "check-for-api-key": "bun run check-for-api-key.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepublishOnly": "bun run build"
   }
 }

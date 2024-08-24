@@ -11,7 +11,6 @@ import ToolRegistry from "lib/tool-registry";
 import MessageHistory from "lib/message-history";
 import Tool from "lib/tool";
 import AnthropicMsgClientConfigurator from "lib/anthropic/anthropic-msg-client-configurator";
-import AnthropicPromptCache from "lib/anthropic/anthropic-prompt-cache";
 
 class AnthropicClient implements LLMClient {
   anthropic: Anthropic;
@@ -19,7 +18,6 @@ class AnthropicClient implements LLMClient {
   tools: ToolRegistry;
   messageHistory: MessageHistory;
   sessionHistory: SessionLog;
-  promptCache: AnthropicPromptCache;
 
   private constructor({
     agentConfig,
@@ -40,8 +38,6 @@ class AnthropicClient implements LLMClient {
     this.anthropic = new Anthropic({
       apiKey,
     });
-
-    this.promptCache = AnthropicPromptCache.create(agentConfig);
 
     this.tools = tools;
     this.messageHistory = MessageHistory.from([]);
@@ -130,6 +126,7 @@ class AnthropicClient implements LLMClient {
   }
 
   private async processModelResponse(response: Anthropic.Messages.Message) {
+    console.dir(response);
     if (response.stop_reason === "max_tokens") {
       UI.red(
         "Max tokens reached, consider increasing the limit or refining your input.",
@@ -185,7 +182,7 @@ class AnthropicClient implements LLMClient {
       config,
     });
 
-    const msg = client.create(config);
+    const msg = await client.create(config);
 
     await this.processModelResponse(msg);
 
