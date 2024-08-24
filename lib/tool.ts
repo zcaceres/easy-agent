@@ -32,7 +32,7 @@ class Tool {
 
   async callFn(...args: any) {
     const results = await this.fn(...args);
-    return JSON.stringify(results);
+    return results as unknown;
   }
 
   static create(config: ToolConfig) {

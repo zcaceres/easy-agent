@@ -2,7 +2,7 @@
 
 Next:
   - tag tools individually
-  - system on its own
+  - dependency injection for logger and other implicit deps inside classes
 
 Future:
 

@@ -15,7 +15,7 @@ describe("ToolRunner", () => {
   it("should run a tool", async () => {
     const toolUse = mockedToolUse;
     const result = await ToolRunner.use(toolUse, ToolRegistry.mocked());
-    expect(result).toEqual(JSON.stringify("mocked result"));
+    expect(result).toEqual("mocked result");
   });
 
   it("should throw an error if the tool is not registered", async () => {
@@ -23,9 +23,9 @@ describe("ToolRunner", () => {
     toolUse.name = "my-tool";
 
     await expect(
-      ToolRunner.use(toolUse, ToolRegistry.mocked())
+      ToolRunner.use(toolUse, ToolRegistry.mocked()),
     ).rejects.toThrow(
-      "Unknown tool called: my-tool. You need to register it on the agent for it to be used. Available tools: mockedtool"
+      "Unknown tool called: my-tool. You need to register it on the agent for it to be used. Available tools: mockedtool",
     );
   });
 });

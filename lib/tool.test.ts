@@ -24,6 +24,6 @@ describe("Tool", () => {
   it("should run a tool", async () => {
     const tool = Tool.mocked();
     const result = await tool.callFn();
-    expect(result).toEqual(JSON.stringify("mocked result"));
+    expect(result).toEqual("mocked result");
   });
 });

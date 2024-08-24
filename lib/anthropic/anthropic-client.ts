@@ -126,7 +126,6 @@ class AnthropicClient implements LLMClient {
   }
 
   private async processModelResponse(response: Anthropic.Messages.Message) {
-    console.dir(response);
     if (response.stop_reason === "max_tokens") {
       UI.red(
         "Max tokens reached, consider increasing the limit or refining your input.",
