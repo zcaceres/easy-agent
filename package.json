@@ -31,16 +31,16 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.26.1",
+    "@anthropic-ai/sdk": "^0.27.0",
     "colors": "^1.4.0",
     "express": "^4.19.2",
     "jsdom": "^24.1.1",
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "start": "bun run as-boilerplate/start-here.ts",
-    "debug": "bun run as-boilerplate/start-here.ts--debug-mode",
-    "cli": "bun run as-boilerplate/start-here.ts",
+    "start": "bun run src/as-boilerplate/start-here.ts",
+    "debug": "bun run src/as-boilerplate/start-here.ts--debug-mode",
+    "cli": "bun run src/as-boilerplate/start-here.ts",
     "server": "bun run src/lib/server/server.ts",
     "build": "bun build --outdir dist --target node --project tsconfig.json ./src/index.ts",
     "test": "bun test",
