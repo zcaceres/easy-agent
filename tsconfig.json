@@ -7,14 +7,11 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "baseUrl": ".",
-
-    // Bundler mode
+    "declaration": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    // Best practices
     "strict": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
@@ -22,12 +19,10 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": true
+    "noPropertyAccessFromIndexSignature": true,
+    "typeRoots": ["./node_modules/@types", "src/definitions.d.ts"],
+    "rootDir": "./src"
   },
-  "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts"
-  ]
+  "include": ["src/**/*", "src/definitions.d.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

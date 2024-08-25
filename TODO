@@ -1,8 +1,12 @@
 ## Todo
 
 Next:
-  - tag tools individually
   - dependency injection for logger and other implicit deps inside classes
+  - bundle as proper library
+  - update readme for use as library and as project boilerplate
+  - make library example
+  - big tool library
+  - tag tools individually for caching
 
 Future:
 

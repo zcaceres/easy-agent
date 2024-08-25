@@ -2,11 +2,24 @@
   "name": "easy-agent",
   "type": "module",
   "version": "0.1.0",
-  "main": "dist/index.ts",
-  "types": "dist/definitions.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "keywords": [
+    "ai",
+    "agents",
+    "anthropic",
+    "claude"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/express": "^4.17.21",
@@ -25,10 +38,11 @@
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "start": "bun run lib/cli/cli.ts",
-    "cli": "bun run lib/cli/cli.ts",
-    "server": "bun run lib/server/server.ts",
-    "build": "bun build --outdir dist --project tsconfig.json",
+    "start": "bun run as-boilerplate/start-here.ts",
+    "debug": "bun run as-boilerplate/start-here.ts--debug-mode",
+    "cli": "bun run as-boilerplate/start-here.ts",
+    "server": "bun run src/lib/server/server.ts",
+    "build": "bun build --outdir dist --target node --project tsconfig.json ./src/index.ts",
     "test": "bun test",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",

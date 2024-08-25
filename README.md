@@ -95,8 +95,8 @@ For more advanced use cases, you can follow patterns in the `agents` and `tools`
 1. Create a new file in the `agents` directory, e.g., `agents/my-agent.ts`:
 
    ```typescript
-   import Agent from "lib/agent";
-   import MyCustomTool from "tools/my-custom-tool";
+   import Agent from "src/lib/agent";
+   import MyCustomTool from "src/tools/my-custom-tool";
 
    const MY_PROMPT = `You are a helpful assistant that...`;
 
@@ -137,7 +137,7 @@ Remember to run `bun run check-types` to ensure type safety when making changes.
 1. Create a new file in the `tools` directory, e.g., `tools/my-custom-tool.ts`:
 
    ```typescript
-   import Tool from "lib/tool";
+   import Tool from "src/lib/tool";
 
    async function fetchWeather(city: string): Promise<string> {
      // Implement weather fetching logic here
@@ -166,8 +166,8 @@ Remember to run `bun run check-types` to ensure type safety when making changes.
 
    ```typescript
    // in agents/weather-agent.ts
-   import Agent from "lib/agent";
-   import FetchWeather from "tools/my-custom-tool";
+   import Agent from "src/lib/agent";
+   import FetchWeather from "src/tools/my-custom-tool";
 
    export default Agent.create({
      name: "WeatherAgent",
