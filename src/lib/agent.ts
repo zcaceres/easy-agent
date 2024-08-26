@@ -3,8 +3,10 @@ import type {
   AgentConfig,
   AgentInitializer,
   NormalizedName,
-} from "definitions";
+} from "src/definitions";
 import NormalizeName from "src/lib/name-normalizer";
+import SessionLog from "src/lib/session-log";
+import MessageHistory from "src/lib/message-history";
 
 import AnthropicClient from "src/lib/anthropic/anthropic-client";
 import ToolRegistry from "./tool-registry";
@@ -39,6 +41,8 @@ class Agent {
     this.client = AnthropicClient.create({
       agentConfig: this.config,
       tools: this.tools,
+      messageHistory: MessageHistory.from([]),
+      sessionHistory: SessionLog.create(),
     });
     this.start = this.client.start.bind(this.client);
   }

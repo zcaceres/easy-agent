@@ -1,7 +1,7 @@
 import { describe, it, expect } from "bun:test";
 
 import MessageHistory from "./message-history";
-import type { SourceType } from "definitions";
+import type { SourceType } from "src/definitions";
 
 describe("MessageHistory", () => {
   it("should create a new instance of MessageHistory", () => {

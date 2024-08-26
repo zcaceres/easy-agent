@@ -38,9 +38,9 @@
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "start": "bun run src/as-boilerplate/start-here.ts",
-    "debug": "bun run src/as-boilerplate/start-here.ts--debug-mode",
-    "cli": "bun run src/as-boilerplate/start-here.ts",
+    "start": "bun run src/boilerplate.example.ts",
+    "debug": "bun run src/boilerplate.example.ts --debug-mode",
+    "cli": "bun run src/boilerplate.example.ts",
     "server": "bun run src/lib/server/server.ts",
     "build": "bun build --outdir dist --target node --project tsconfig.json ./src/index.ts",
     "test": "bun test",

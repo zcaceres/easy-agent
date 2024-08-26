@@ -2,7 +2,7 @@ import { describe, it, expect } from "bun:test";
 
 import ToolRunner from "./tool-runner";
 import ToolRegistry from "./tool-registry";
-import type { ToolUseBlock } from "@anthropic-ai/sdk/src/lib/resources/messages.js";
+import { ToolUseBlock } from "@anthropic-ai/sdk/src/resources/index.js";
 
 const mockedToolUse: ToolUseBlock = {
   id: "mocked-id",
@@ -23,9 +23,9 @@ describe("ToolRunner", () => {
     toolUse.name = "my-tool";
 
     await expect(
-      ToolRunner.use(toolUse, ToolRegistry.mocked()),
+      ToolRunner.use(toolUse, ToolRegistry.mocked())
     ).rejects.toThrow(
-      "Unknown tool called: my-tool. You need to register it on the agent for it to be used. Available tools: mockedtool",
+      "Unknown tool called: my-tool. You need to register it on the agent for it to be used. Available tools: mockedtool"
     );
   });
 });

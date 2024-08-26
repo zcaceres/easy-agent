@@ -2,7 +2,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 
 import { describe, it, expect } from "bun:test";
 import AnthropicMsgClientConfigurator from "./anthropic-msg-client-configurator";
-import Tool from "../../lib/tool";
+import Tool from "../tool";
 
 describe("AnthropicMsgClientConfigurator", () => {
   it("should configure the client with prompt caching disabled", () => {
@@ -45,7 +45,7 @@ describe("AnthropicMsgClientConfigurator", () => {
     const result = AnthropicMsgClientConfigurator.create(
       baseClient,
       baseConfig,
-      baseMessages
+      baseMessages,
     );
 
     expect(result).toEqual({
@@ -116,7 +116,7 @@ describe("AnthropicMsgClientConfigurator", () => {
     const result = AnthropicMsgClientConfigurator.create(
       baseClient,
       baseConfig,
-      baseMessages
+      baseMessages,
     );
 
     expect(result).toEqual({

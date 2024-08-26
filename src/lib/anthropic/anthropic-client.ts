@@ -2,15 +2,15 @@ import Anthropic from "@anthropic-ai/sdk";
 
 import type { AgentConfig, LLMClient, HistoryEntry } from "src/definitions";
 import globals from "src/lib/global-config";
-import UI from "src/lib/cli/ui";
+import UI from "src/lib/ui";
 import ToolRunner from "src/lib/tool-runner";
-import SessionLog from "src/lib/session-log";
 import Logger from "src/lib/logger";
 import AnthropicParser from "src/lib/anthropic/anthropic-parser";
 import ToolRegistry from "src/lib/tool-registry";
-import MessageHistory from "src/lib/message-history";
 import Tool from "src/lib/tool";
 import AnthropicMsgClientConfigurator from "src/lib/anthropic/anthropic-msg-client-configurator";
+import SessionLog from "src/lib/session-log";
+import MessageHistory from "src/lib/message-history";
 
 class AnthropicClient implements LLMClient {
   anthropic: Anthropic;
@@ -22,16 +22,20 @@ class AnthropicClient implements LLMClient {
   private constructor({
     agentConfig,
     tools,
+    messageHistory,
+    sessionHistory,
   }: {
     agentConfig: AgentConfig;
     tools: ToolRegistry;
+    messageHistory: MessageHistory;
+    sessionHistory: SessionLog;
   }) {
     this.baseConfig = agentConfig;
     const apiKey = globals.ANTHROPIC_API_KEY;
 
     if (!apiKey) {
       throw new Error(
-        "Missing API key. Add it to the global-config.ts file or to your environment variables as ANTHROPIC_API_KEY"
+        "Missing API key. Add it to the global-config.ts file or to your environment variables as ANTHROPIC_API_KEY",
       );
     }
 
@@ -40,8 +44,8 @@ class AnthropicClient implements LLMClient {
     });
 
     this.tools = tools;
-    this.messageHistory = MessageHistory.from([]);
-    this.sessionHistory = SessionLog.create();
+    this.messageHistory = messageHistory;
+    this.sessionHistory = sessionHistory;
   }
 
   private addToMessageHistory(message: HistoryEntry) {
@@ -58,7 +62,7 @@ class AnthropicClient implements LLMClient {
 
   private async processToolUse(
     toolUseBlocks: Anthropic.Messages.ToolUseBlock[],
-    tools: ToolRegistry
+    tools: ToolRegistry,
   ) {
     const toolUseResults = [];
 
@@ -74,7 +78,7 @@ class AnthropicClient implements LLMClient {
         });
       } catch (e: any) {
         Logger.debug(
-          `Running tool "${toolUseBlock.name}" produced error: "${e.message}"`
+          `Running tool "${toolUseBlock.name}" produced error: "${e.message}"`,
         );
         toolUseResults.push({
           type: "tool_result" as const,
@@ -128,7 +132,7 @@ class AnthropicClient implements LLMClient {
   private async processModelResponse(response: Anthropic.Messages.Message) {
     if (response.stop_reason === "max_tokens") {
       UI.red(
-        "Max tokens reached, consider increasing the limit or refining your input."
+        "Max tokens reached, consider increasing the limit or refining your input.",
       );
     }
 
@@ -152,7 +156,7 @@ class AnthropicClient implements LLMClient {
 
     const toolUseResults = await this.processToolUse(
       toolUseRequests,
-      this.tools
+      this.tools,
     );
 
     if (toolUseResults) {
@@ -163,7 +167,7 @@ class AnthropicClient implements LLMClient {
 
       for (const useResult of toolUseResults) {
         Logger.debug(
-          `Tool Used: ${useResult.tool_use_id}\nResult: ${useResult.content}`
+          `Tool Used: ${useResult.tool_use_id}\nResult: ${useResult.content}`,
         );
       }
     }
@@ -173,7 +177,7 @@ class AnthropicClient implements LLMClient {
     const { client, config } = AnthropicMsgClientConfigurator.create(
       this.anthropic,
       this.baseConfig,
-      this.messageHistory.get()
+      this.messageHistory.get(),
     );
 
     Logger.debug({
@@ -197,7 +201,7 @@ class AnthropicClient implements LLMClient {
     const { client, config } = AnthropicMsgClientConfigurator.create(
       this.anthropic,
       this.baseConfig,
-      this.messageHistory.get()
+      this.messageHistory.get(),
     );
 
     Logger.debug({
@@ -216,7 +220,7 @@ class AnthropicClient implements LLMClient {
     // If the stream terminates with tool_use, Claude is waiting for the tool results before continuing. If we don't restart the stream here, it'll hang and ask for user input before it continues.
     if (finalMsg.stop_reason === "tool_use") {
       Logger.debug(
-        "Stream ended with tool use, sending results back without user input..."
+        "Stream ended with tool use, sending results back without user input...",
       );
       await this.stream();
     }
@@ -260,17 +264,28 @@ class AnthropicClient implements LLMClient {
         ...overrides,
       },
       tools: ToolRegistry.mocked(),
+      messageHistory: MessageHistory.from([]),
+      sessionHistory: SessionLog.create(),
     });
   }
 
   static create({
     agentConfig,
     tools,
+    messageHistory,
+    sessionHistory,
   }: {
     agentConfig: AgentConfig;
     tools: ToolRegistry;
+    messageHistory: MessageHistory;
+    sessionHistory: SessionLog;
   }) {
-    return new AnthropicClient({ agentConfig, tools });
+    return new AnthropicClient({
+      agentConfig,
+      tools,
+      messageHistory,
+      sessionHistory,
+    });
   }
 }
 

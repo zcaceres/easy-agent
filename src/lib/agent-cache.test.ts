@@ -1,7 +1,7 @@
 import { describe, it, expect } from "bun:test";
 
 import AgentCache from "./agent-cache";
-import Agent from "../../lib/agent";
+import Agent from "./agent";
 
 describe("AgentCache", () => {
   it("should set and get values correctly", () => {

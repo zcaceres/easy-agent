@@ -40,13 +40,22 @@ Run:
 bun start
 ```
 
-## Starting in CLI Mode
+## Usage
+
+You can use `easy-agent` as project boilerplate or as a library.
+
+
+### Using As Project Boilerplate
+
+#### Starting in CLI Mode
+
+See `boilerplate.ts` for a typical project setup in CLI Mode.
 
 CLI Mode allows you to interact with your agents in a simple command-line interface.
 
-CLI mode is the default mode. Start it with `bun run start` or `bun run cli`.
+Start it with `bun run start` or `bun run cli`.
 
-## Starting in Server Mode
+#### Starting in Server Mode
 
 Server Mode runs an Express server, allowing interaction with agents via HTTP requests.
 
@@ -58,7 +67,7 @@ Server Mode runs an Express server, allowing interaction with agents via HTTP re
 
 2. The server will start on `http://localhost:3000`.
 
-3. Interact with agents using HTTP requests:
+3. Interact with agents via HTTP:
 
    - List available agents:
      ```bash
@@ -72,6 +81,8 @@ Server Mode runs an Express server, allowing interaction with agents via HTTP re
      ```
 
 Note: Server Mode currently supports stateless interactions only. Each request/response is independent.
+
+### Using As a Library
 
 ## How to Make an Agent
 

@@ -1,4 +1,4 @@
-import UI from "src/lib/cli/ui";
+import UI from "src/lib/ui";
 import type Agent from "src/lib/agent";
 import type AgentRegistry from "src/lib/agent-registry";
 
@@ -8,12 +8,12 @@ export default class AgentSelector {
       `Select an Agent:\n${registeredAgents
         .list()
         .map((name) => `- ${name}`)
-        .join("\n")}\n\n`
+        .join("\n")}\n\n`,
     );
 
     const selectedAgent = this.fromAgentName(
       selectedAgentName,
-      registeredAgents
+      registeredAgents,
     );
 
     if (!selectedAgent) {
@@ -29,7 +29,7 @@ export default class AgentSelector {
 
   static fromAgentName(
     selectedAgentName: string,
-    registeredAgents: AgentRegistry
+    registeredAgents: AgentRegistry,
   ) {
     const selectedAgent = registeredAgents.get(selectedAgentName);
 

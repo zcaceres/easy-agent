@@ -1,12 +1,24 @@
 import express from "express";
 import type { Request, Response } from "express";
-import { registeredAgents } from "../../as-boilerplate/start-here";
-import AgentSelector from "../agent-selector";
-import type { ServerAgent } from "definitions";
-import AgentCache from "./agent-cache";
+import AgentSelector from "src/lib/agent-selector";
+import type { ServerAgent } from "src/definitions";
+import AgentCache from "src/lib/agent-cache";
 import type Agent from "src/lib/agent";
 
+import AgentRegistry from "src/lib/agent-registry";
+import DiceRoller from "src/agents/sample/dice-roller";
+import Librarian from "src/agents/sample/librarian";
+import Vanilla from "src/agents/sample/vanilla";
+
 const CachedAgentInstances = AgentCache.create();
+
+const registeredAgents = AgentRegistry.create([
+  // Add your agent (see your-agent-here.example.ts)!
+  DiceRoller(),
+  Librarian(),
+  Vanilla(),
+  // Remove sample agents above that you don't want available.
+]);
 
 const app = express();
 const port = 3000;
@@ -71,3 +83,5 @@ app.post(
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+export default app;

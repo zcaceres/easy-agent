@@ -1,6 +1,6 @@
 import type AgentRegistry from "src/lib/agent-registry";
 import AgentSelector from "src/lib/agent-selector";
-import UI from "src/lib/cli/ui";
+import UI from "src/lib/ui";
 
 export default class CLI {
   static async start(agentRegistry: AgentRegistry) {

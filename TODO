@@ -1,17 +1,18 @@
 ## Todo
 
 Next:
-  - dependency injection for logger and other implicit deps inside classes
-  - bundle as proper library
-  - update readme for use as library and as project boilerplate
-  - make library example
-  - big tool library
-  - tag tools individually for caching
+
+- dependency injection for logger and other implicit deps inside classes
+- bundle as proper library
+- make library example
+- big tool library
+- tag tools individually for caching
 
 Future:
 
 - Stateful server mode
 - Vision
+- Use only Session History or Message Log, not both!
 - Clean up Anthropic lifecycle process function a bit
 - refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
 - handle 429 issues

@@ -1,6 +1,6 @@
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-import type { CLIArgs } from "definitions";
+import type { CLIArgs } from "src/definitions";
 const argv = yargs(hideBin(process.argv)).argv as CLIArgs;
 
 const globals = {

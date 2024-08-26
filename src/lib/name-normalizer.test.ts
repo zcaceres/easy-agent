@@ -1,7 +1,7 @@
 import { describe, it, expect } from "bun:test";
 
 import NormalizeName from "./name-normalizer";
-import type { NormalizedName } from "definitions";
+import type { NormalizedName } from "../definitions";
 
 describe("NormalizeName", () => {
   it("should normalize a name", () => {

@@ -1,5 +1,5 @@
 import type Anthropic from "@anthropic-ai/sdk";
-import type { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/resources/beta/prompt-caching/index.d.ts";
+import type { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/src/lib/resources/beta/prompt-caching/messages.js";
 import type {
   AgentConfig,
   CacheOption,
@@ -20,7 +20,7 @@ class AnthropicPromptCache {
   private capacity: number;
 
   private constructor(
-    capacity: number = globals.ANTHROPIC_MAX_PROMPT_CACHE_SIZE
+    capacity: number = globals.ANTHROPIC_MAX_PROMPT_CACHE_SIZE,
   ) {
     this.cache = {
       tools: [],
@@ -31,7 +31,7 @@ class AnthropicPromptCache {
 
   private add(
     type: CacheOption,
-    item: Tool | PromptCachingBetaTextBlockParam[]
+    item: Tool | PromptCachingBetaTextBlockParam[],
   ): void {
     if (type === "system") {
       this.cache.system = item as PromptCachingBetaTextBlockParam[];
@@ -40,7 +40,7 @@ class AnthropicPromptCache {
         console.log(
           "Cache was full, so",
           (item as Tool).definition.name,
-          "was not cached"
+          "was not cached",
         );
         return;
       }
