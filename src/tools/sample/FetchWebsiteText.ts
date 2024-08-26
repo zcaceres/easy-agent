@@ -1,6 +1,11 @@
 import { JSDOM } from "jsdom";
+import NodeCache from "node-cache";
+
 import Tool from "src/lib/tool";
 import { fetchHTML } from "src/tools/sample/FetchHTML";
+
+// We cache big payloads in memory in case the agent requests the same url multiple times.
+const cache = new NodeCache({ stdTTL: 600 }); // 10 minutes
 
 export class HTMLParser {
   private doc: Document;
@@ -40,8 +45,13 @@ export default Tool.create({
     },
   ],
   fn: async ({ url }: { url: string }) => {
+    const cachedContent = cache.get<string>(url);
+    if (cachedContent) {
+      return { text: cachedContent };
+    }
     const html = await fetchHTML({ url });
     const text = HTMLParser.from(html);
+    cache.set(url, text);
     return {
       text,
     };
