@@ -17,7 +17,7 @@ function checkForApiKey() {
       if (content.includes("sk-")) {
         console.error(`Error: File '${file.name}' contains 'sk-' pattern.`);
         console.error(
-          "!!!!!!!!!!!!!!!!YOU MIGHT BE COMMITTING YOUR API KEY!!!!!!!!!!!"
+          "!!!!!!!!!!!YOU MIGHT BE COMMITTING YOUR API KEY!!!!!!!!!!!",
         );
         process.exit(1);
       }
