@@ -1,9 +1,14 @@
-import { describe, it, expect } from "bun:test";
+import { describe, it, expect, beforeAll } from "bun:test";
 
 import AgentCache from "./agent-cache";
 import Agent from "./agent";
+import globals from "./global-config";
 
 describe("AgentCache", () => {
+  beforeAll(() => {
+    globals.ANTHROPIC_API_KEY = "test1234";
+  });
+
   it("should set and get values correctly", () => {
     const cache = AgentCache.create();
 

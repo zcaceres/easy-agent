@@ -88,7 +88,7 @@ describe("AnthropicPromptCache", () => {
       expect(result.tools[0]).not.toHaveProperty("cache_control");
     });
 
-    it.only("should not cache tools when capacity is full", () => {
+    it("should not cache tools when capacity is full", () => {
       const cache = AnthropicPromptCache.create(1);
       const mockTools = Array(2).fill(Tool.mocked());
       const baseConfig = {
