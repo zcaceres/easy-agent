@@ -2,10 +2,12 @@ import type {
   TextBlockParam,
   ToolResultBlockParam,
   ToolUseBlockParam,
-} from "@anthropic-ai/sdk/resources/index.mjs";
+  Model,
+} from "@anthropic-ai/sdk/resources";
+import Anthropic from "@anthropic-ai/sdk";
 import Tool from "src/lib/tool";
-import type { Model } from "@anthropic-ai/sdk/src/lib/resources/messages.js";
-import type { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/src/lib/resources/beta/prompt-caching/messages.js";
+import { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/resources/beta/prompt-caching/messages";
+import Agent from "./lib/agent";
 
 export type SourceType = "user" | "assistant";
 
@@ -40,9 +42,7 @@ export type AgentConfig = {
 };
 
 export type AnthropicConfiguredClient = {
-  client:
-    | Anthropic.Beta.PromptCaching.PromptCachingBetaMessage
-    | Anthropic.Messages.Message;
+  client: Anthropic.Beta.PromptCaching.Messages | Anthropic.Messages;
   config: AnthropicClientConfig;
 };
 
@@ -100,14 +100,6 @@ export interface LLMClient {
   start: (input: string) => Promise<void>;
 }
 
-declare global {
-  namespace Express {
-    interface Request {
-      context: Context;
-    }
-  }
-}
-
 type Distinct<T, DistinctName> = T & { __TYPE__: DistinctName };
 export type NormalizedName = Distinct<string, "NormalizedName">;
 
@@ -125,14 +117,6 @@ export namespace ServerAgent {
   export interface NotFoundError {
     message: string;
   }
-}
-
-export abstract class Registry {
-  abstract list(): NormalizedName[];
-  abstract exists(itemName: string): boolean;
-  abstract get(itemName: string): Agent | null;
-
-  static create(itemsToRegister: Agent[] | Tool[]): Registry {}
 }
 
 export type PromptCache = {

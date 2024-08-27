@@ -1,5 +1,5 @@
-import type Anthropic from "@anthropic-ai/sdk";
-import type { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/src/lib/resources/beta/prompt-caching/messages.js";
+import type { Anthropic } from "@anthropic-ai/sdk";
+import { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/resources/beta/prompt-caching/messages";
 import type {
   AgentConfig,
   CacheOption,

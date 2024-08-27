@@ -1,4 +1,5 @@
-import type { NormalizedName, Registry, ToolMap } from "src/definitions";
+import type { NormalizedName, ToolMap } from "src/definitions";
+import type { Registry } from "src/lib/registry";
 import Tool from "src/lib/tool";
 import NormalizeName from "src/lib/name-normalizer";
 
@@ -8,7 +9,7 @@ export default class ToolRegistry implements Registry {
 
   private constructor(tools: Tool[]) {
     tools.forEach((tool) =>
-      this.registry.set(NormalizeName(tool.definition.name), tool)
+      this.registry.set(NormalizeName(tool.definition.name), tool),
     );
     this.nameCache = Array.from(this.registry.keys());
   }

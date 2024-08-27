@@ -209,9 +209,7 @@ class AnthropicClient implements LLMClient {
       config,
     });
 
-    const stream = client
-      .stream(config)
-      .on("error", (error) => UI.red(error.message));
+    const stream = client.stream(config);
 
     const finalMsg = await stream.finalMessage();
 

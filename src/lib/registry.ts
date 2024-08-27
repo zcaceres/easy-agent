@@ -5,7 +5,7 @@ import type Tool from "src/lib/tool";
 export abstract class Registry {
   abstract list(): NormalizedName[];
   abstract exists(name: string): boolean;
-  abstract get(name: string): Agent | null;
+  abstract get(name: string): Agent | Tool | null;
 
   static create(_itemsToRegister: Agent[] | Tool[]): Registry {
     // Implementation of the static method

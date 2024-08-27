@@ -1,4 +1,5 @@
-import type { AgentMap, NormalizedName, Registry } from "src/definitions";
+import type { AgentMap, NormalizedName } from "src/definitions";
+import type { Registry } from "src/lib/registry";
 import Agent from "src/lib/agent";
 import NormalizeName from "src/lib/name-normalizer";
 
@@ -8,7 +9,7 @@ export default class AgentRegistry implements Registry {
 
   private constructor(agents: Agent[]) {
     agents.forEach((agent) =>
-      this.registry.set(NormalizeName(agent.name), agent)
+      this.registry.set(NormalizeName(agent.name), agent),
     );
     this.nameCache = Array.from(this.registry.keys());
   }

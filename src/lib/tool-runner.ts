@@ -1,4 +1,4 @@
-import type { ToolUseBlock } from "@anthropic-ai/sdk/resources/index.mjs";
+import type { ToolUseBlock } from "@anthropic-ai/sdk/resources";
 import type ToolRegistry from "src/lib/tool-registry";
 
 export default class ToolRunner {
@@ -10,7 +10,7 @@ export default class ToolRunner {
           toolUse.name
         }. You need to register it on the agent for it to be used. Available tools: ${callableTools
           .list()
-          .join(", ")}`
+          .join(", ")}`,
       );
     }
     return tool.callFn(toolUse.input);

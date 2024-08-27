@@ -44,7 +44,7 @@
     "debug": "bun run src/example.cli.ts --debug-mode",
     "cli": "bun run src/example.cli.ts",
     "server": "bun run src/example.server.ts",
-    "build": "bun build --outdir dist --target node --project tsconfig.json ./src/index.ts",
+    "build": "tsc --project tsconfig.json",
     "test": "bun test",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",
