@@ -106,17 +106,15 @@ This will start a CLI session with any agents you register in the array.
 
 ## How to Make an Agent
 
-The simplest possible way to make an agent is to open `example.cli.ts` and add the following:
+The simplest possible way to make an agent is to call `bun run add-agent` and follow the prompts.
+
+You can also check out `example.cli.ts` and add code like the following:
 
 ```typescript
-export default AgentRegistry.create([
-  // ... some sample agents here
-  new Agent({
-    name: "Dad Joke Agent",
-    prompt: "I tell Dad Jokes and only Dad Jokes"
-  })
-])
-
+Agent.create({
+  name: "Dad Joke Agent",
+  prompt: "I tell Dad Jokes and only Dad Jokes"
+})
 ```
 
 Now type `bun start` and `dad-joke-agent` will be available to use.
@@ -165,6 +163,8 @@ To create more complex agents:
 Remember to run `bun run check-types` to ensure type safety when making changes.
 
 ## How to Make a Tool
+
+The simplest possible way to make an agent is to call `bun run add-tool` and follow the prompts.
 
 1. Create a new file in the `tools` directory, e.g., `tools/my-custom-tool.ts`:
 

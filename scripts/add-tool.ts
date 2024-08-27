@@ -76,7 +76,9 @@ export default Tool.create({
 
   fs.writeFileSync(filePath, toolContent);
 
-  console.log(`Tool "${toolName}" has been created at ${filePath}`);
+  console.log(
+    `Tool "${toolName}" has been created at ${filePath}. You'll need to implement the function body in the file!`,
+  );
 
   rl.close();
 }
