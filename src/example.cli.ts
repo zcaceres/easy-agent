@@ -7,23 +7,22 @@ import Translator from "src/agents/sample/translator";
 import Lawyer from "src/agents/sample/lawyer";
 import ResearchAssistant from "src/agents/sample/research-assistant";
 import Summarizer from "src/agents/sample/summarizer";
+import Toolmaker from "src/agents/sample/toolmaker";
+import Programmer from "src/agents/sample/programmer";
 
-import AgentRegistry from "src/lib/agent-registry";
-import CLI from "src/modes/cli";
-import Toolmaker from "./agents/sample/toolmaker";
-import Programmer from "./agents/sample/programmer";
+import EasyAgentCLI from "src/modes/cli";
 
 /**
  * WELCOME!
  *
- * All agents listed below will be available for selection from the CLI in CLI Mode and from the GET endpoint in `server.ts` in Server mode.
+ * All agents listed below will be available for selection from the CLI in CLI Mode.
  *
  * To define a new agent, create a new file in the `agents` directory and export it here. (Example in your-agent-here.example.ts) You can also define them in-line below using Agent.create().
  *
  * To define new tools, create a new file in the `tools` directory and export it here. (Example in your-tool-here.example.ts). You can also define them in-line below in using Tool.create() and registering them in the Agents `tools` property.
  */
 
-const registeredAgents = AgentRegistry.create([
+EasyAgentCLI.start([
   // Add your agent (see your-agent-here.example.ts)!
   DiceRoller(),
   Librarian(),
@@ -38,5 +37,3 @@ const registeredAgents = AgentRegistry.create([
   Programmer(),
   // Remove sample agents above that you don't want available.
 ]);
-
-CLI.start(registeredAgents);

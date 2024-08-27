@@ -49,7 +49,7 @@ You can use `easy-agent` as project boilerplate or as a library.
 
 #### Starting in CLI Mode
 
-See `boilerplate.ts` for a typical project setup in CLI Mode.
+See `example.cli.ts` for a typical project setup in CLI Mode.
 
 CLI Mode allows you to interact with your agents in a simple command-line interface.
 
@@ -58,6 +58,8 @@ Start it with `bun run start` or `bun run cli`.
 #### Starting in Server Mode
 
 Server Mode runs an Express server, allowing interaction with agents via HTTP requests.
+
+See `example.server.ts` for a typical project setup in Server Mode.
 
 1. Start the server:
 
@@ -69,24 +71,42 @@ Server Mode runs an Express server, allowing interaction with agents via HTTP re
 
 3. Interact with agents via HTTP:
 
-   - List available agents:
-     ```bash
-     curl http://localhost:3000
-     ```
+List available agents:
+```bash
+curl http://localhost:3000
+```
 
-   - Send a message to an agent:
-     ```bash
-     curl -X POST http://localhost:3000 -H "Content-Type: application/json" \
-          -d '{"agentName": "summarizer", "message": "Summarize this: https://example.com"}'
-     ```
+Send a message to an agent:
+```bash
+curl -X POST http://localhost:3000 -H "Content-Type: application/json" \
+    -d '{"agentName": "summarizer", "message": "Summarize this: https://example.com"}'
+```
 
-Note: Server Mode currently supports stateless interactions only. Each request/response is independent.
+Note: Server Mode currently supports stateless interactions only. You'll need to handle state on the client side.
 
 ### Using As a Library
 
+You can use `easy-agent` as a library in your project.
+
+First, import a `mode` from `easy-agent/modes`. Then, create an instance of `CLI` and pass your agents to it.
+
+```typescript
+import { EasyAgentCLI } from "easy-agent/modes";
+
+EasyAgentCLI.start([
+  new Agent({
+    name: "MyAgent",
+    prompt: "I am a helpful assistant that...",
+    tools: [MyCustomTool],
+  }),
+]);
+```
+
+This will start a CLI session with any agents you register in the array.
+
 ## How to Make an Agent
 
-The simplest possible way to make an agent is to open `start-here.ts` and add the following:
+The simplest possible way to make an agent is to open `example.cli.ts` and add the following:
 
 ```typescript
 export default AgentRegistry.create([
@@ -115,7 +135,7 @@ For more advanced use cases, you can follow patterns in the `agents` and `tools`
      name: "MyAgent",
      prompt: MY_PROMPT,
      tools: [MyCustomTool],
-     // Optional: customize other settings
+     // Optionally customize other settings...
      // mode: "stream",
      // model: "claude-3-opus-20240229",
      // maxTokens: 4000,
@@ -123,15 +143,16 @@ For more advanced use cases, you can follow patterns in the `agents` and `tools`
    });
    ```
 
-2. Register your agent in `start-here.ts`:
+2. Register your agent wherever you've called an EasyAgent mode (see `example.cli.ts`):
 
    ```typescript
-   import MyAgent from "./agents/my-agent";
+   import { EasyAgentCLI } from "easy-agent/modes";
+   import MyAgent from "easy-agent/agents/my-agent";
 
-   export default [
+   EasyAgentCLI.start([
      // ... other agents
      MyAgent,
-   ];
+   ]);
    ```
 
 3. Your agent is now available in both CLI and Server modes!
@@ -194,7 +215,26 @@ Tips for creating effective tools:
 - Handle errors gracefully and return informative error messages.
 - Consider adding type definitions for complex input/output structures.
 
-## Other Examples
+### Toolmaker Mode
+
+easy-agent comes bundled with an agent named Toolmaker, which can make tools for your agents.
+
+To use:
+
+1. Start easy-agent in CLI mode: `bun run start`.
+2. Select `toolmaker`
+3. Tell it the kind of tool you want e.g. `Create a tool that fetches the current price of Bitcoin`
+4. The tool will appear in the `tools` directory.
+5. Fix up the tool as needed.
+6. Import the tool into your agent.
+
+Toolmaker writes all tools in Typescript. It can also fetch data from websites if needed, so feel free to send in a url for API docs or other data sources.
+
+#### Important
+> Toolmaker creates tools but does not use them immediately. You'll need to manually import and add new tools to your agents.
+> Always review and test automatically generated tools before using them in production environments.
+
+## Other Agent Examples
 
 Here are some more advanced examples of agent configurations:
 
