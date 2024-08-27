@@ -31,12 +31,6 @@ export default class AgentSelector {
     selectedAgentName: string,
     registeredAgents: AgentRegistry,
   ) {
-    const selectedAgent = registeredAgents.get(selectedAgentName);
-
-    if (!selectedAgent) {
-      throw new Error(`Invalid selection: ${selectedAgentName}.`);
-    }
-
     return registeredAgents.get(selectedAgentName);
   }
 }
