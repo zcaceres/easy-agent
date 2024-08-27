@@ -5,11 +5,12 @@ Next:
 - dependency injection for logger and other implicit deps inside classes
 - bundle as proper library
 - make library example
-- big tool library
 - tag tools individually for caching
+- add Claude prompt library as sample agents
 
 Future:
 
+- big tool library
 - Stateful server mode
 - Vision
 - Use only Session History or Message Log, not both!

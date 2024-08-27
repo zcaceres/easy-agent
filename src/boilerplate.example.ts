@@ -10,6 +10,7 @@ import Summarizer from "src/agents/sample/summarizer";
 
 import AgentRegistry from "src/lib/agent-registry";
 import CLI from "src/lib/cli/cli";
+import Toolmaker from "./agents/sample/toolmaker";
 
 /**
  * WELCOME!
@@ -32,6 +33,7 @@ const registeredAgents = AgentRegistry.create([
   ResearchAssistant(),
   Lawyer(),
   Summarizer(),
+  Toolmaker(),
   // Remove sample agents above that you don't want available.
 ]);
 
