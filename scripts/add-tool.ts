@@ -62,10 +62,6 @@ async function main() {
     }
   }
 
-  const implementation = await askQuestion(
-    "Enter the implementation for your tool (you can edit this later): ",
-  );
-
   const toolContent = `import Tool from 'src/lib/tool';
 
 export default Tool.create({
@@ -73,7 +69,7 @@ export default Tool.create({
   description: '${description}',
   inputs: ${JSON.stringify(inputs, null, 2)},
   fn: async ({ ${inputs.map((input) => input.name).join(", ")} }) => {
-    ${implementation}
+    // your implementation here
   }
 });
 `;
