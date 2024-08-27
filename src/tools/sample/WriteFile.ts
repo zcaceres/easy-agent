@@ -4,7 +4,7 @@ import path from "path";
 import Tool from "src/lib/tool";
 
 export default Tool.create({
-  name: "WriteTextToFile",
+  name: "write_text_to_file",
   description: "Writes the provided text to a file in the specified directory.",
   inputs: [
     {
