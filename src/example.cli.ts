@@ -17,9 +17,9 @@ import EasyAgentCLI from "src/modes/cli";
  *
  * All agents listed below will be available for selection from the CLI in CLI Mode.
  *
- * To define a new agent, create a new file in the `agents` directory and export it here. (Example in your-agent-here.example.ts) You can also define them in-line below using Agent.create().
+ * To define a new agent, create a new file in the `agents` directory and export it here. (Example in your-agent-here.example.ts) You can also define them in-line below using Agent.create() or call `bun run add-agent`.
  *
- * To define new tools, create a new file in the `tools` directory and export it here. (Example in your-tool-here.example.ts). You can also define them in-line below in using Tool.create() and registering them in the Agents `tools` property.
+ * To define new tools, create a new file in the `tools` directory and export it here. (Example in your-tool-here.example.ts). You can also define them in-line below by using Tool.create() or with `bun run add-tool` and then register them in the Agents `tools` property.
  */
 
 EasyAgentCLI.start([
