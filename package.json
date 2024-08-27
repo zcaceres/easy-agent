@@ -1,12 +1,26 @@
 {
   "name": "easy-agent",
-  "type": "module",
   "version": "0.1.0",
-  "main": "dist/index.ts",
-  "types": "dist/definitions.d.ts",
+  "description": "A very simple Typescript framework to build tool-wielding AI Agents.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "keywords": [
+    "ai",
+    "agents",
+    "anthropic",
+    "claude"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/express": "^4.17.21",
@@ -18,22 +32,27 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.26.1",
+    "@anthropic-ai/sdk": "^0.27.0",
     "colors": "^1.4.0",
     "express": "^4.19.2",
     "jsdom": "^24.1.1",
+    "node-cache": "^5.1.2",
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "start": "bun run lib/cli/cli.ts",
-    "cli": "bun run lib/cli/cli.ts",
-    "server": "bun run lib/server/server.ts",
-    "build": "bun build --outdir dist --project tsconfig.json",
+    "start": "bun run src/example.cli.ts",
+    "debug": "bun run src/example.cli.ts --debug-mode",
+    "cli": "bun run src/example.cli.ts",
+    "server": "bun run src/example.server.ts",
+    "build": "tsc --project tsconfig.json",
     "test": "bun test",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",
     "check-for-api-key": "bun run check-for-api-key.ts",
     "prepare": "husky",
     "prepublishOnly": "bun run build"
+  },
+  "engines": {
+    "node": ">=14.17.0"
   }
 }
