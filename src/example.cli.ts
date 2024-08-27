@@ -11,7 +11,6 @@ import Toolmaker from "src/agents/sample/toolmaker";
 import Programmer from "src/agents/sample/programmer";
 
 import EasyAgentCLI from "src/modes/cli";
-import ProductNamingPro from "./agents/sample/product-naming-pro";
 
 /**
  * WELCOME!
