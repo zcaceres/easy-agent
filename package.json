@@ -43,6 +43,8 @@
     "start": "bun run src/example.cli.ts",
     "debug": "bun run src/example.cli.ts --debug-mode",
     "cli": "bun run src/example.cli.ts",
+    "add-agent": "bun run scripts/add-agent.ts",
+    "add-tool": "bun run scripts/add-tool.ts",
     "server": "bun run src/example.server.ts",
     "build": "tsc --project tsconfig.json",
     "test": "bun test",
