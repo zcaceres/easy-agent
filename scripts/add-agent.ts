@@ -29,12 +29,12 @@ async function main() {
 
   const agentContent = `import Agent from "src/lib/agent";
 
-const PROMPT_${sanitizedName.toUpperCase()} = \`${prompt}\`;
+const PROMPT_${sanitizedName.replace(/-/g, "_").toUpperCase()} = \`${prompt}\`;
 
 const ${agentName.replace(/\s+/g, "")} = () =>
   Agent.create({
     name: "${agentName}",
-    prompt: PROMPT_${sanitizedName.toUpperCase()},
+    prompt: PROMPT_${sanitizedName.replace(/-/g, "_").toUpperCase()},
   });
 
 export default ${agentName.replace(/\s+/g, "")};
