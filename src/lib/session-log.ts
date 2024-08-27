@@ -10,6 +10,10 @@ export default class SessionLog {
   }
 
   private createFilePath() {
+    if (!fs.existsSync(globals.SESSION_LOG_DIR_PATH_DEFAULT)) {
+      fs.mkdirSync(globals.SESSION_LOG_DIR_PATH_DEFAULT, { recursive: true });
+    }
+
     let todayDateHumanReadable =
       new Date().toLocaleDateString().replace(/\//g, "-") +
       "--" +
@@ -19,7 +23,7 @@ export default class SessionLog {
 
     fs.writeFileSync(
       filePath,
-      `# Agent Session on ${todayDateHumanReadable}\n\n`
+      `# Agent Session on ${todayDateHumanReadable}\n\n`,
     );
 
     return filePath;
