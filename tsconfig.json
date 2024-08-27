@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
-    "target": "ESNext",
-    "module": "ESNext",
+    "lib": ["ES2020", "DOM"],
+    "target": "ES2020",
+    "module": "ES2020",
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
     "baseUrl": ".",
     "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "strict": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
@@ -20,9 +22,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true,
-    "typeRoots": ["./node_modules/@types", "src/definitions.d.ts"],
     "rootDir": "./src"
   },
-  "include": ["src/**/*", "src/definitions.d.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

@@ -1,7 +1,8 @@
 {
   "name": "easy-agent",
-  "type": "module",
   "version": "0.1.0",
+  "description": "A very simple Typescript framework to build tool-wielding AI Agents.",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -50,5 +51,8 @@
     "check-for-api-key": "bun run check-for-api-key.ts",
     "prepare": "husky",
     "prepublishOnly": "bun run build"
+  },
+  "engines": {
+    "node": ">=14.17.0"
   }
 }
