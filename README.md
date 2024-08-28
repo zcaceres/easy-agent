@@ -88,13 +88,13 @@ Note: Server Mode currently supports stateless interactions only. You'll need to
 
 You can use `easy-agent` as a library in your project.
 
-First, import a `mode` from `easy-agent/modes`. Then, create an instance of `CLI` and pass your agents to it.
+First, import a `EasyAgentCLI` or `EasyAgentServer` mode from `easy-agent`. Then, create an instance of that mode and pass your agents to it.
 
 ```typescript
-import { EasyAgentCLI } from "easy-agent/modes";
+import { EasyAgentCLI, Agent } from "easy-agent";
 
 EasyAgentCLI.start([
-  new Agent({
+  Agent.create({
     name: "MyAgent",
     prompt: "I am a helpful assistant that...",
     tools: [MyCustomTool],
@@ -159,8 +159,6 @@ To create more complex agents:
 - Add custom tools in the `tools` directory
 - Experiment with different prompts and configurations
 - Use the `cacheOptions` to optimize performance for frequently used contexts
-
-Remember to run `bun run check-types` to ensure type safety when making changes.
 
 ## How to Make a Tool
 

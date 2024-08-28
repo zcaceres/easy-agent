@@ -6,11 +6,16 @@ import type {
 } from "src/definitions";
 import AnthropicPromptCache from "./anthropic-prompt-cache";
 
+/**
+Hierarchy of caching:
+- system
+- tools
+*/
 class AnthropicMsgClientConfigurator {
   static create(
     baseClient: Anthropic,
     baseConfig: AgentConfig,
-    baseMessages: HistoryEntry[]
+    baseMessages: HistoryEntry[],
   ): AnthropicConfiguredClient {
     let isPromptCachingEnabled = baseConfig.cacheOptions.length > 0;
 
@@ -30,7 +35,7 @@ class AnthropicMsgClientConfigurator {
     const promptCache = AnthropicPromptCache.create();
     const { system, tools, messages } = promptCache.configure(
       baseConfig,
-      baseMessages
+      baseMessages,
     );
 
     return {
@@ -66,7 +71,7 @@ class AnthropicMsgClientConfigurator {
         },
       },
       config,
-      []
+      [],
     );
   }
 }
