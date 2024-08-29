@@ -100,6 +100,7 @@ EasyAgentCLI.start([
     tools: [MyCustomTool],
   }),
 ]);
+
 ```
 
 This will start a CLI session with any agents you register in the array.
