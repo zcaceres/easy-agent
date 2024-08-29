@@ -2,13 +2,12 @@ import colors from "colors";
 import * as readline from "readline";
 
 import type { HistoryEntry } from "src/definitions";
-import Logger from "src/lib/logger";
 
 export default class UI {
   static async promptForUserInput(
     promptText: string,
     sendCommand: string | null = null,
-    endCommand: string = "/bye"
+    endCommand: string = "/bye",
   ) {
     const rl = readline.createInterface({
       input: process.stdin,
@@ -79,6 +78,5 @@ export default class UI {
         }
       }
     }
-    Logger.debug(JSON.stringify(msg.content));
   }
 }

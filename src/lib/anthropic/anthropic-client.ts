@@ -52,9 +52,9 @@ class AnthropicClient implements LLMClient {
     this.messageHistory.append(message);
     this.sessionHistory.append(message);
 
-    Logger.debug(message);
+    // Logger.debug(message);
 
-    if (globals.DEBUG_MODE) Logger.history(this.messageHistory.get());
+    // Logger.history(this.messageHistory.get());
   }
 
   private async processToolUse(
@@ -74,9 +74,9 @@ class AnthropicClient implements LLMClient {
           is_error: false,
         });
       } catch (e: any) {
-        Logger.debug(
-          `Running tool "${toolUseBlock.name}" produced error: "${e.message}"`,
-        );
+        // Logger.debug(
+        //   `Running tool "${toolUseBlock.name}" produced error: "${e.message}"`,
+        // );
         toolUseResults.push({
           type: "tool_result" as const,
           tool_use_id: toolUseBlock.id,
@@ -127,19 +127,19 @@ class AnthropicClient implements LLMClient {
   }
 
   private async processModelResponse(response: Anthropic.Messages.Message) {
-    if (response.stop_reason === "max_tokens") {
-      UI.red(
-        "Max tokens reached, consider increasing the limit or refining your input.",
-      );
-    }
+    // if (response.stop_reason === "max_tokens") {
+    //   UI.red(
+    //     "Max tokens reached, consider increasing the limit or refining your input.",
+    //   );
+    // }
 
-    if (response.stop_reason === "tool_use") {
-      Logger.debug("Tool use detected");
-    }
+    // if (response.stop_reason === "tool_use") {
+    //   Logger.debug("Tool use detected");
+    // }
 
-    if (response.stop_reason === "end_turn") {
-      Logger.debug("End of conversation turn");
-    }
+    // if (response.stop_reason === "end_turn") {
+    //   Logger.debug("End of conversation turn");
+    // }
 
     const { text, toolUseRequests } = AnthropicParser.parse(response);
 
@@ -163,9 +163,9 @@ class AnthropicClient implements LLMClient {
       });
 
       for (const useResult of toolUseResults) {
-        Logger.debug(
-          `Tool Used: ${useResult.tool_use_id}\nResult: ${useResult.content}`,
-        );
+        // Logger.debug(
+        //   `Tool Used: ${useResult.tool_use_id}\nResult: ${useResult.content}`,
+        // );
       }
     }
   }
@@ -177,19 +177,17 @@ class AnthropicClient implements LLMClient {
       this.messageHistory.get(),
     );
 
-    Logger.debug({
-      msg: "Created Message Client",
-      config,
-    });
+    // Logger.debug({
+    //   msg: "Created Message Client",
+    //   config,
+    // });
 
     const msg = await client.create(config);
 
     await this.processModelResponse(msg);
 
     if (msg.stop_reason === "tool_use") {
-      // If the model is waiting for tool results, we should send them back immediately.
-      // Otherwise we wait for user input.
-      Logger.debug("Tool use detected, sending back results.");
+      // If the model is waiting for tool results, we should send them back immediately. Otherwise we wait for user input.
       await this.message();
     }
   }
@@ -201,10 +199,10 @@ class AnthropicClient implements LLMClient {
       this.messageHistory.get(),
     );
 
-    Logger.debug({
-      msg: "Created Stream Client",
-      config,
-    });
+    // Logger.debug({
+    //   msg: "Created Stream Client",
+    //   config,
+    // });
 
     const stream = client.stream(config);
 
@@ -212,19 +210,14 @@ class AnthropicClient implements LLMClient {
 
     await this.processModelResponse(finalMsg);
 
-    // If the stream terminates with tool_use, Claude is waiting for the tool results before continuing. If we don't restart the stream here, it'll hang and ask for user input before it continues.
     if (finalMsg.stop_reason === "tool_use") {
-      Logger.debug(
-        "Stream ended with tool use, sending results back without user input...",
-      );
+      // If the stream terminates with tool_use, Claude is waiting for the tool results before continuing. If we don't restart the stream here, it'll hang and ask for user input before it continues.
       await this.stream();
     }
   }
 
   async start(userInput?: string) {
-    if (globals.DEBUG_MODE) {
-      Logger.debug("Sending message to Claude...");
-    }
+    //   Logger.debug("Sending message to Claude...");
 
     if (!userInput) {
       return;
