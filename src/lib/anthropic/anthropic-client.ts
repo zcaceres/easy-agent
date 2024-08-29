@@ -10,13 +10,13 @@ import ToolRegistry from "src/lib/tool-registry";
 import Tool from "src/lib/tool";
 import AnthropicMsgClientConfigurator from "src/lib/anthropic/anthropic-msg-client-configurator";
 import SessionLog from "src/lib/session-log";
-import MessageHistory from "src/lib/message-history";
+import { AnthropicMessageHistory } from "src/lib/message-history";
 
 class AnthropicClient implements LLMClient {
   anthropic: Anthropic;
   baseConfig: AgentConfig;
   tools: ToolRegistry;
-  messageHistory: MessageHistory;
+  messageHistory: AnthropicMessageHistory;
   sessionHistory: SessionLog;
 
   private constructor({
@@ -27,7 +27,7 @@ class AnthropicClient implements LLMClient {
   }: {
     agentConfig: AgentConfig;
     tools: ToolRegistry;
-    messageHistory: MessageHistory;
+    messageHistory: AnthropicMessageHistory;
     sessionHistory: SessionLog;
   }) {
     this.baseConfig = agentConfig;
@@ -49,9 +49,6 @@ class AnthropicClient implements LLMClient {
   }
 
   private addToMessageHistory(message: HistoryEntry) {
-    // Anthropic breaks if you send two messages back to back with the same `role`.
-    // So if there's a case where the last message is the same role as the current message that we're adding to the history, we'll just append it to the content blocks of the last message instead.
-
     this.messageHistory.append(message);
     this.sessionHistory.append(message);
 
@@ -262,7 +259,7 @@ class AnthropicClient implements LLMClient {
         ...overrides,
       },
       tools: ToolRegistry.mocked(),
-      messageHistory: MessageHistory.from([]),
+      messageHistory: AnthropicMessageHistory.from([]),
       sessionHistory: SessionLog.create(),
     });
   }
@@ -275,7 +272,7 @@ class AnthropicClient implements LLMClient {
   }: {
     agentConfig: AgentConfig;
     tools: ToolRegistry;
-    messageHistory: MessageHistory;
+    messageHistory: AnthropicMessageHistory;
     sessionHistory: SessionLog;
   }) {
     return new AnthropicClient({

@@ -56,6 +56,7 @@ export type AnthropicClientConfig = {
 
 export type AgentInitializer = Partial<AgentConfig> & {
   name: string;
+  provider?: "anthropic"; // Add more providers in the future.
 };
 
 export type TransmissionMode = "message" | "stream";
@@ -123,3 +124,5 @@ export type PromptCache = {
   tools: Tool[];
   system: PromptCachingBetaTextBlockParam[];
 };
+
+export type AnthropicModelTypes = Anthropic.Messages.Model;

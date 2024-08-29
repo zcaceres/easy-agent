@@ -2,20 +2,17 @@
 
 Next:
 
-- dependency injection for logger and other implicit deps inside classes
+- Use only Session History or Message Log, not both!
+    - dependency injection for logger and other implicit deps inside classes
+- refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
 - bundle as proper library
 - make library example
 - tag tools individually for caching
-- add Claude prompt library as sample agents
 
 Future:
 
-- big tool library
-- Stateful server mode
 - Vision
-- Use only Session History or Message Log, not both!
 - Clean up Anthropic lifecycle process function a bit
-- refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
 - handle 429 issues
 
 ```
