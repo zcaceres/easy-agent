@@ -1,6 +1,7 @@
 import type Anthropic from "@anthropic-ai/sdk";
+import { MessageParser } from "src/definitions";
 
-class AnthropicParser {
+class AnthropicMessageParser implements MessageParser {
   static parse(response: Anthropic.Messages.Message) {
     const text = this.parseTextFromResponse(response);
     const toolUseRequests = this.parseToolUseFromResponse(response);
@@ -37,4 +38,4 @@ class AnthropicParser {
   }
 }
 
-export default AnthropicParser;
+export default AnthropicMessageParser;

@@ -1,24 +1,17 @@
-import type { HistoryEntry } from "src/definitions";
+import type { HistoryEntry, IMessageHistory } from "src/definitions";
+import fs from "fs";
+import globals from "./global-config";
 
-export abstract class IMessageHistory {
-  abstract append(entry: HistoryEntry): void;
-
-  abstract get(): HistoryEntry[];
-
-  abstract clear(): void;
-
-  abstract latest(): HistoryEntry | undefined;
-
-  static from(_entries: HistoryEntry[]): IMessageHistory {
-    throw new Error("Method 'from' must be implemented by subclasses");
-  }
-}
-
-export class AnthropicMessageHistory implements IMessageHistory {
+export default class AnthropicMessageHistory implements IMessageHistory {
   private history: HistoryEntry[] = [];
+  private historyLogFilePath: string;
 
-  private constructor(startingEntries: HistoryEntry[] = []) {
+  private constructor(
+    startingEntries: HistoryEntry[] = [],
+    historyLogFilePath = globals.MESSAGE_HISTORY_LOG_FILE_PATH_DEFAULT,
+  ) {
     this.history = startingEntries;
+    this.historyLogFilePath = historyLogFilePath;
   }
 
   append(entry: HistoryEntry) {
@@ -32,6 +25,7 @@ export class AnthropicMessageHistory implements IMessageHistory {
       return;
     }
     this.history.push(entry);
+    this.log();
   }
 
   get() {
@@ -46,7 +40,16 @@ export class AnthropicMessageHistory implements IMessageHistory {
     return structuredClone(this.history[this.history.length - 1]);
   }
 
-  static from(entries: HistoryEntry[]) {
-    return new AnthropicMessageHistory(entries);
+  log() {
+    if (globals.LOG_MODE === "debug") {
+      fs.writeFileSync(
+        this.historyLogFilePath,
+        JSON.stringify(this.get(), null, 2),
+      );
+    }
+  }
+
+  static from(entries: HistoryEntry[], historyLogFilePath?: string) {
+    return new AnthropicMessageHistory(entries, historyLogFilePath);
   }
 }

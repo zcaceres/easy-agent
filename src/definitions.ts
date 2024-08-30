@@ -9,6 +9,18 @@ import Tool from "src/lib/tool";
 import { PromptCachingBetaTextBlockParam } from "@anthropic-ai/sdk/resources/beta/prompt-caching/messages";
 import Agent from "./lib/agent";
 
+export abstract class Registry {
+  abstract list(): NormalizedName[];
+  abstract exists(name: string): boolean;
+  abstract get(name: string): Agent | Tool | null;
+
+  static create(_itemsToRegister: Agent[] | Tool[]): Registry {
+    // Implementation of the static method
+    // This method should return an instance of a concrete class that extends Registry
+    throw new Error("Method not implemented.");
+  }
+}
+
 export type SourceType = "user" | "assistant";
 
 export type HistoryEntry = {
@@ -21,12 +33,13 @@ export type HistoryEntry = {
   >;
 };
 
-export type LogLevel = "verbose" | "laconic";
+export type LogMode = "debug" | "test" | "none";
 
 export type CLIArgs = {
   model?: string;
   maxModelTokens?: number;
   debugMode?: boolean;
+  testMode?: boolean;
   apiKey?: string;
 };
 
@@ -97,11 +110,41 @@ export type ToolArg = {
 export type ToolMap = Map<NormalizedName, Tool>;
 export type AgentMap = Map<NormalizedName, Agent>;
 
-export interface LLMClient {
-  start: (input: string) => Promise<void>;
+export abstract class LLMClient {
+  abstract start: (input: string) => Promise<void>;
+
+  static create(_agentInit: AgentInitializer): Agent {
+    throw new Error("Must implement create()");
+  }
+}
+
+export abstract class IMessageHistory {
+  abstract append(entry: HistoryEntry): void;
+
+  abstract get(): HistoryEntry[];
+
+  abstract clear(): void;
+
+  abstract latest(): HistoryEntry | undefined;
+
+  abstract log(): void;
+
+  static from(
+    _entries: HistoryEntry[],
+    _historyLogFilePath?: string,
+  ): IMessageHistory {
+    throw new Error("Method 'from' must be implemented by subclasses");
+  }
+}
+
+export abstract class MessageParser {
+  static parse(_response: Anthropic.Messages.Message) {
+    throw new Error("Must implement method");
+  }
 }
 
 type Distinct<T, DistinctName> = T & { __TYPE__: DistinctName };
+
 export type NormalizedName = Distinct<string, "NormalizedName">;
 
 export namespace ServerAgent {

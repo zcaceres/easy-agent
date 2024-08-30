@@ -1,7 +1,7 @@
 {
   "name": "easy-agent",
   "version": "0.1.0",
-  "description": "A very simple Typescript framework to build tool-wielding AI Agents.",
+  "description": "A simple Typescript framework to build and run tool-wielding AI Agents.",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -47,7 +47,7 @@
     "add-tool": "bun run scripts/add-tool.ts",
     "server": "bun run src/example.server.ts",
     "build": "tsc --project tsconfig.json",
-    "test": "bun test",
+    "test": "bun test --test-mode",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",
     "check-for-api-key": "bun run check-for-api-key.ts",

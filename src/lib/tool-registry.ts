@@ -1,5 +1,4 @@
-import type { NormalizedName, ToolMap } from "src/definitions";
-import type { Registry } from "src/lib/registry";
+import type { NormalizedName, ToolMap, Registry } from "src/definitions";
 import Tool from "src/lib/tool";
 import NormalizeName from "src/lib/name-normalizer";
 

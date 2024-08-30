@@ -60,7 +60,7 @@ export default class UI {
   }
 
   static yellow(txt: string) {
-    console.log(colors.yellow(txt));
+    console.warn(colors.yellow(txt));
   }
 
   static red(txt: string) {

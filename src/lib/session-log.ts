@@ -5,31 +5,39 @@ import globals from "src/lib/global-config";
 export default class SessionLog {
   filePath;
 
-  constructor() {
-    this.filePath = this.createFilePath();
+  private constructor(
+    sessionLogDir: string = globals.SESSION_HISTORY_LOG_DIR_PATH_DEFAULT,
+  ) {
+    this.filePath = this.createFilePath(sessionLogDir);
   }
 
-  private createFilePath() {
-    if (!fs.existsSync(globals.SESSION_LOG_DIR_PATH_DEFAULT)) {
-      fs.mkdirSync(globals.SESSION_LOG_DIR_PATH_DEFAULT, { recursive: true });
-    }
-
+  private createFilePath(sessionLogDir: string) {
     let todayDateHumanReadable =
       new Date().toLocaleDateString().replace(/\//g, "-") +
       "--" +
       new Date().toLocaleTimeString();
 
-    const filePath = `${globals.SESSION_LOG_DIR_PATH_DEFAULT}/SESSION-LOG-${todayDateHumanReadable}.md`;
+    const filePath = `${sessionLogDir}/session-log-${todayDateHumanReadable}.md`;
 
-    fs.writeFileSync(
-      filePath,
-      `# Agent Session on ${todayDateHumanReadable}\n\n`,
-    );
+    if (globals.LOG_MODE !== "test") {
+      if (!fs.existsSync(sessionLogDir)) {
+        fs.mkdirSync(sessionLogDir, { recursive: true });
+      }
+
+      fs.writeFileSync(
+        filePath,
+        `# Agent Session on ${todayDateHumanReadable}\n\n`,
+      );
+    }
 
     return filePath;
   }
 
   append(entry: HistoryEntry) {
+    if (globals.LOG_MODE === "test") {
+      return;
+    }
+
     let markdown = "";
     if (entry.role === "user") {
       entry.content.forEach((item) => {
@@ -55,7 +63,7 @@ export default class SessionLog {
     fs.appendFileSync(this.filePath, markdown);
   }
 
-  static create() {
-    return new SessionLog();
+  static create(sessionLogDir?: string) {
+    return new SessionLog(sessionLogDir);
   }
 }

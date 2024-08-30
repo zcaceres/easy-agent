@@ -6,7 +6,7 @@ import type {
 } from "src/definitions";
 import NormalizeName from "src/lib/name-normalizer";
 import SessionLog from "src/lib/session-log";
-import { AnthropicMessageHistory } from "src/lib/message-history";
+import AnthropicMessageHistory from "src/lib/message-history";
 
 import AnthropicClient from "src/lib/anthropic/anthropic-client";
 import ToolRegistry from "./tool-registry";
@@ -19,7 +19,7 @@ class Agent {
   tools: ToolRegistry;
   start: (input: string) => Promise<void>;
 
-  constructor({
+  private constructor({
     name,
     prompt,
     tools,
@@ -56,11 +56,11 @@ class Agent {
   }
 
   getHistory() {
-    return this.client.messageHistory.get();
+    return this.client.getHistory();
   }
 
   getLatestMessage() {
-    return this.client.messageHistory.latest();
+    return this.client.getLatestMessage();
   }
 
   static create({

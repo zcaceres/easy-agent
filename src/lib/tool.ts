@@ -1,11 +1,11 @@
 import type { ToolArg, ToolConfig, ToolDefinition } from "src/definitions";
 
 class Tool {
-  definition: ToolDefinition;
+  private _definition: ToolDefinition;
   private fn: (...args: any[]) => Promise<string>;
 
   private constructor({ name, description, inputs, fn }: ToolConfig) {
-    this.definition = {
+    this._definition = {
       name: name,
       description: description,
       input_schema: {
@@ -17,6 +17,10 @@ class Tool {
       },
     };
     this.fn = fn;
+  }
+
+  get definition() {
+    return this._definition;
   }
 
   private generateInputSchema(toolInputs: ToolArg[]) {
