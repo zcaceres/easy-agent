@@ -9,6 +9,7 @@ import ResearchAssistant from "src/agents/sample/research-assistant";
 import Summarizer from "src/agents/sample/summarizer";
 import Toolmaker from "src/agents/sample/toolmaker";
 import Programmer from "src/agents/sample/programmer";
+import URLExtractor from "src/agents/sample/url-extractor";
 
 import EasyAgentCLI from "src/modes/cli";
 
@@ -35,5 +36,6 @@ EasyAgentCLI.start([
   Summarizer(),
   Toolmaker(),
   Programmer(),
+  URLExtractor(),
   // Remove sample agents above that you don't want available.
 ]);

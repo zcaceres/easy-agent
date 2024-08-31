@@ -47,13 +47,11 @@ export default Tool.create({
   fn: async ({ url }: { url: string }) => {
     const cachedContent = cache.get<string>(url);
     if (cachedContent) {
-      return { text: cachedContent };
+      return cachedContent;
     }
     const html = await fetchHTML({ url });
     const text = HTMLParser.from(html);
     cache.set(url, text);
-    return {
-      text,
-    };
+    return text;
   },
 });

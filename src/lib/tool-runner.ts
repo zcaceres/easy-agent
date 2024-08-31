@@ -1,8 +1,11 @@
-import type { ToolUseBlock } from "@anthropic-ai/sdk/resources";
+import type { TextBlockParam, ToolUseBlock } from "@anthropic-ai/sdk/resources";
 import type ToolRegistry from "src/lib/tool-registry";
 
 export default class ToolRunner {
-  static async use(toolUse: ToolUseBlock, callableTools: ToolRegistry) {
+  static async use(
+    toolUse: ToolUseBlock,
+    callableTools: ToolRegistry,
+  ): Promise<TextBlockParam> {
     const tool = callableTools.get(toolUse.name);
     if (!tool) {
       throw new Error(
@@ -13,6 +16,19 @@ export default class ToolRunner {
           .join(", ")}`,
       );
     }
-    return tool.callFn(toolUse.input);
+
+    const result = await tool.callFn(toolUse.input);
+
+    if (typeof result === "string") {
+      return {
+        type: "text" as const,
+        text: result,
+      };
+    } else {
+      return {
+        type: "text" as const,
+        text: JSON.stringify(result),
+      };
+    }
   }
 }

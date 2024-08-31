@@ -1,8 +1,10 @@
 import type {
   TextBlockParam,
+  ContentBlock,
   ToolResultBlockParam,
   ToolUseBlockParam,
   Model,
+  TextBlock,
 } from "@anthropic-ai/sdk/resources";
 import Anthropic from "@anthropic-ai/sdk";
 import Tool from "src/lib/tool";
@@ -97,7 +99,7 @@ export type ToolConfig = {
   name: string;
   description: string;
   inputs: ToolArg[];
-  fn: (...args: any[]) => any;
+  fn: (...args: any[]) => Promise<any>;
 };
 
 export type ToolArg = {

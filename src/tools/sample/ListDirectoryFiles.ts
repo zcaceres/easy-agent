@@ -23,6 +23,7 @@ export default Tool.create({
     },
   ],
   fn: async ({ directory }) => {
-    return await listDirectoryFiles(directory);
+    let dl = await listDirectoryFiles(directory);
+    return dl.join("\n");
   },
 });

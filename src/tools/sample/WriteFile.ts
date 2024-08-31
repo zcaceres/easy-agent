@@ -26,6 +26,6 @@ export default Tool.create({
   fn: async ({ text, directory, filename }) => {
     const filePath = path.join(directory, filename);
     await fs.promises.writeFile(filePath, text);
-    console.log(`Wrote text to file: ${filePath}`);
+    return `Wrote text to file: ${filePath}`;
   },
 });

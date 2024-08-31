@@ -2,7 +2,7 @@ import type { ToolArg, ToolConfig, ToolDefinition } from "src/definitions";
 
 class Tool {
   private _definition: ToolDefinition;
-  private fn: (...args: any[]) => Promise<string>;
+  private fn: (...args: any[]) => Promise<any>;
 
   private constructor({ name, description, inputs, fn }: ToolConfig) {
     this._definition = {
@@ -34,9 +34,9 @@ class Tool {
     return properties;
   }
 
-  async callFn(...args: any) {
+  async callFn(...args: any): Promise<any> {
     const results = await this.fn(...args);
-    return results as unknown;
+    return results;
   }
 
   static create(config: ToolConfig) {
