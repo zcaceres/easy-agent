@@ -10,10 +10,7 @@ import Tool from "src/lib/tool";
 import AnthropicMsgClientConfigurator from "src/lib/anthropic/anthropic-msg-client-configurator";
 import SessionLog from "src/lib/session-log";
 import AnthropicMessageHistory from "src/lib/message-history";
-import {
-  ToolResultBlockParam,
-  ToolUseBlock,
-} from "@anthropic-ai/sdk/resources";
+import { ToolResultBlockParam } from "@anthropic-ai/sdk/resources";
 
 class AnthropicClient implements LLMClient {
   private anthropic: Anthropic;

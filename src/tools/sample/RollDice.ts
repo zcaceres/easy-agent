@@ -18,7 +18,7 @@ export default Tool.create({
       required: true,
     },
   ],
-  fn: ({ low, high }: { low: number; high: number }) => {
+  fn: async ({ low, high }: { low: number; high: number }) => {
     const randomInt = Math.floor(Math.random() * (high - low + 1) + low);
     return `Roll: ${randomInt}`;
   },

@@ -12,8 +12,8 @@ export default Tool.create({
     },
     // More inputs as needed...
   ],
-  fn: ({ your_input }: { your_input: string }) => {
+  fn: async ({ your_input }: { your_input: string }) => {
     // Your tool logic goes here
-    console.log(`Your input: ${your_input}`);
+    return `Your result: ${your_input}`;
   },
 });

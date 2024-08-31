@@ -1,10 +1,8 @@
 import type {
   TextBlockParam,
-  ContentBlock,
   ToolResultBlockParam,
   ToolUseBlockParam,
   Model,
-  TextBlock,
 } from "@anthropic-ai/sdk/resources";
 import Anthropic from "@anthropic-ai/sdk";
 import Tool from "src/lib/tool";
