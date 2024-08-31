@@ -43,6 +43,16 @@ export type CLIArgs = {
   apiKey?: string;
 };
 
+export type Globals = {
+  LOG_MODE: LogMode;
+  MAX_MODEL_TOKENS_DEFAULT: number;
+  ANTHROPIC_MODEL_DEFAULT: Model;
+  MESSAGE_HISTORY_LOG_FILE_PATH_DEFAULT: string;
+  SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: string;
+  ANTHROPIC_API_KEY: string | undefined;
+  ANTHROPIC_MAX_PROMPT_CACHE_SIZE: number;
+};
+
 export type CacheOption = "tools" | "system";
 
 export type AgentConfig = {

@@ -1,14 +1,17 @@
 import * as fs from "fs";
-import type { HistoryEntry } from "src/definitions";
+import type { HistoryEntry, LogMode } from "src/definitions";
 import globals from "src/lib/global-config";
 
 export default class SessionLog {
   filePath;
+  private logMode: LogMode;
 
   private constructor(
     sessionLogDir: string = globals.SESSION_HISTORY_LOG_DIR_PATH_DEFAULT,
+    logMode: LogMode = globals.LOG_MODE,
   ) {
     this.filePath = this.createFilePath(sessionLogDir);
+    this.logMode = logMode;
   }
 
   private createFilePath(sessionLogDir: string) {
@@ -19,7 +22,7 @@ export default class SessionLog {
 
     const filePath = `${sessionLogDir}/session-log-${todayDateHumanReadable}.md`;
 
-    if (globals.LOG_MODE !== "test") {
+    if (this.logMode !== "test") {
       if (!fs.existsSync(sessionLogDir)) {
         fs.mkdirSync(sessionLogDir, { recursive: true });
       }
@@ -34,7 +37,7 @@ export default class SessionLog {
   }
 
   append(entry: HistoryEntry) {
-    if (globals.LOG_MODE === "test") {
+    if (this.logMode === "test") {
       return;
     }
 
@@ -63,7 +66,7 @@ export default class SessionLog {
     fs.appendFileSync(this.filePath, markdown);
   }
 
-  static create(sessionLogDir?: string) {
-    return new SessionLog(sessionLogDir);
+  static create(sessionLogDir?: string, logMode?: LogMode) {
+    return new SessionLog(sessionLogDir, logMode);
   }
 }

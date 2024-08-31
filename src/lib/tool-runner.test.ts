@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import type { ToolUseBlock } from "@anthropic-ai/sdk/resources";
+import { ToolUseBlock } from "@anthropic-ai/sdk/src/resources/index.js";
 
 import ToolRunner from "./tool-runner";
 import ToolRegistry from "./tool-registry";
@@ -15,7 +15,10 @@ describe("ToolRunner", () => {
   it("should run a tool", async () => {
     const toolUse = mockedToolUse;
     const result = await ToolRunner.use(toolUse, ToolRegistry.mocked());
-    expect(result).toEqual("mocked result");
+    expect(result).toEqual({
+      type: "text",
+      text: "mocked result",
+    });
   });
 
   it("should throw an error if the tool is not registered", async () => {

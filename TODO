@@ -1,16 +1,19 @@
 ## Todo
 
-Next:
-- make sure agents are still running well given the loop refactor
-- enforce that all tool functions must return a string of a content block for tool use
+GOAL
+- Take this framework live top NPM
+   - take ai project manager live (based on published NPM package)
+- Adding Gemini support
+    - Gemini has a couple things that it seems better at.
 
-- refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
+Next:
 - bundle as proper library
 - make library example
-- tag tools individually for caching
+
 
 Future:
-
+- refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
+- tag tools individually for caching
 - Vision
 - handle 429 issues
 

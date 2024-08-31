@@ -14,28 +14,19 @@ describe("SessionLog -- debug mode", () => {
   let sessionLog: SessionLog;
   const mockDate = new Date("2023-04-01T12:00:00");
 
-  beforeAll(() => {
+  beforeEach(() => {
     mock.module("fs", () => ({
+      mkdirSync: mock(() => {}),
       writeFileSync: mock(() => {}),
       appendFileSync: mock(() => {}),
     }));
-
-    mock.module("src/lib/global-config", () => ({
-      default: {
-        LOG_MODE: "debug",
-        SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: "/mock/path",
-      },
-    }));
-  });
-
-  beforeEach(() => {
     global.Date = class extends Date {
       constructor() {
         super();
         return mockDate;
       }
     } as DateConstructor;
-    sessionLog = SessionLog.create();
+    sessionLog = SessionLog.create("/mock/path", "debug");
   });
 
   afterEach(() => {
@@ -98,13 +89,6 @@ describe("SessionLog -- test mode", () => {
       writeFileSync: mock(() => {}),
       appendFileSync: mock(() => {}),
     }));
-
-    mock.module("src/lib/global-config", () => ({
-      default: {
-        LOG_MODE: "test",
-        SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: "/mock/path",
-      },
-    }));
   });
 
   beforeEach(() => {
@@ -114,7 +98,7 @@ describe("SessionLog -- test mode", () => {
         return mockDate;
       }
     } as DateConstructor;
-    sessionLog = SessionLog.create();
+    sessionLog = SessionLog.create("/mock/path", "test");
   });
 
   afterEach(() => {

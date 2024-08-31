@@ -1,6 +1,6 @@
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-import type { CLIArgs, LogMode } from "src/definitions";
+import type { CLIArgs, Globals, LogMode } from "src/definitions";
 const argv = yargs(hideBin(process.argv)).argv as CLIArgs;
 
 function getMode(): LogMode {
@@ -13,7 +13,7 @@ function getMode(): LogMode {
   return "none";
 }
 
-const globals = {
+const globals: Globals = {
   LOG_MODE: getMode(),
   MAX_MODEL_TOKENS_DEFAULT: argv.maxModelTokens ?? 2096,
   ANTHROPIC_MODEL_DEFAULT: argv.model ?? "claude-3-haiku-20240307",
@@ -25,7 +25,7 @@ const globals = {
 
 if (globals.LOG_MODE === "debug") {
   console.log("Config:");
-  console.log(globals);
+  // console.log(globals);
 }
 
 export default globals;
