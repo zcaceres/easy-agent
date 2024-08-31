@@ -1,5 +1,8 @@
 # easy-agent
 
+![NPM Version](https://img.shields.io/npm/v/:easy-agent)
+
+
 ## What?
 
 A very simple Typescript framework to build tool-wielding AI Agents.

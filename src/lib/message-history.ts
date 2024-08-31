@@ -1,4 +1,4 @@
-import type { HistoryEntry, IMessageHistory } from "src/definitions";
+import type { HistoryEntry, IMessageHistory } from "../definitions";
 import fs from "fs";
 import globals from "./global-config";
 

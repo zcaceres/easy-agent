@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { HTMLParser } from "src/tools/sample/FetchWebsiteText";
+import { HTMLParser } from "./FetchWebsiteText";
 
 const SAMPLE_HTML = `<html>
     <head>

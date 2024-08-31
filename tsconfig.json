@@ -3,18 +3,16 @@
     "lib": ["ES2020", "DOM"],
     "target": "ES2020",
     "module": "ES2020",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
+    "moduleResolution": "node",
     "allowJs": true,
-    "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+    "importHelpers": true,
     "strict": true,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
 
@@ -22,7 +20,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "baseUrl": "."
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
