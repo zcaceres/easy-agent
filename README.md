@@ -88,7 +88,7 @@ Note: Server Mode currently supports stateless interactions only. You'll need to
 
 You can use `easy-agent` as a library in your project.
 
-First, import a `EasyAgentCLI` or `EasyAgentServer` mode from `easy-agent`. Then, create an instance of that mode and pass your agents to it.
+First, import an `EasyAgentCLI` or `EasyAgentServer` mode from `easy-agent`. Then, create an instance of that mode and pass your agents to it.
 
 ```typescript
 import { EasyAgentCLI, Agent } from "easy-agent";
