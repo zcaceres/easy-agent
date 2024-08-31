@@ -1,9 +1,9 @@
 ## Todo
 
 Next:
+- make sure agents are still running well given the loop refactor
+- enforce that all tool functions must return a string of a content block for tool use
 
-- Use only Session History or Message Log, not both!
-    - dependency injection for logger and other implicit deps inside classes
 - refactor out rendering logic from client to a CLI-oriented module, so that I can break out the message lifecycle from the rendering for server use
 - bundle as proper library
 - make library example
@@ -12,7 +12,6 @@ Next:
 Future:
 
 - Vision
-- Clean up Anthropic lifecycle process function a bit
 - handle 429 issues
 
 ```

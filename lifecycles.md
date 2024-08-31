@@ -3,7 +3,6 @@
 ```mermaid
 flowchart TD
 
-
 POST[Request to /] --> POST2[Parse Body]
 POST2 --> |JSON| POST3[Start Agent Session -- Message mode]
 POST3 --> POST4[Pass Initial Message to Agent]
@@ -20,11 +19,8 @@ G --> |Tool Result| I[Add to Content Block]
 I --> I1[Done Parsing]
 I1 --> |Send Parsed Message to Server| J[Send Payload as Response]
 
-
 GET[Request to /] --> Agent[Get List Available Agents]
 Agent --> |JSON| GET2[Response with List of Agents]
-
-
 ```
 
 ## CLI Lifecycle
