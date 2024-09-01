@@ -314,4 +314,24 @@ Agent.create({
 });
 ```
 
+### Voice Mode
+
+Voice commands are available when using the `EasyAgentCLI`. To enable voice mode:
+
+As CLI mode:
+
+Start CLI
+```bash
+bun run cli --voice
+```
+
+As library:
+
+```ts
+import { EasyAgentCLI } from "easy-agent";
+import MyAgent from "./some-location-where-i-defined-it";
+
+EasyAgentCLI.start([MyAgent], { voice: true });
+```
+
 This setup will cache both the system prompt and tools, in that order, up to the Anthropic-imposed limit.

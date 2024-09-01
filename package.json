@@ -38,10 +38,12 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",
+    "@google-cloud/speech": "^6.7.0",
     "colors": "^1.4.0",
     "express": "^4.19.2",
     "jsdom": "^24.1.1",
     "node-cache": "^5.1.2",
+    "node-record-lpcm16": "^1.0.1",
     "yargs": "^17.7.2"
   },
   "scripts": {
@@ -56,7 +58,7 @@
     "test": "bun test --test-mode",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
     "check-types": "tsc --noEmit --project tsconfig.json ",
-    "check-for-api-key": "bun run check-for-api-key.ts",
+    "check-for-api-key": "bun run ./scripts/check-for-api-key.ts",
     "prepare": "husky"
   },
   "engines": {

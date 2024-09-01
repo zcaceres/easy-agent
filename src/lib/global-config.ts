@@ -21,6 +21,7 @@ const globals: Globals = {
   SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: "session-log",
   ANTHROPIC_API_KEY: argv.apiKey ?? process.env["ANTHROPIC_API_KEY"],
   ANTHROPIC_MAX_PROMPT_CACHE_SIZE: 4,
+  VOICE_MODE: argv.voice ?? false,
 };
 
 if (globals.LOG_MODE === "debug") {

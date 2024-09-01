@@ -1,0 +1,25 @@
+Voice Support
+- [] Find voice to text library
+    - [] ideally local (no API key etc)
+- [] wrapper around the CLI experience
+
+```mermaid
+flowchart TD
+A[Agent CLI Boots Up] --> A1[Select an Agent]
+A1 -.CLI Mode.-> B[CLI listens for line of text]
+B--> B1[I type]
+A1 -.Voice Mode.-> C[Fire Up Voice Listening Loop]
+C --> D[I talk]
+D --> E[Audio streams]
+E --> F[Audio becomes text buffer]
+F --> F1[User presses enter]
+B1 --> F1
+F -.-> F2[Audio Stream stops]
+F1 --> G[Text becomes Agent Input]
+G --> H[Request / Response Loop Happens]
+```
+
+voice:true when you instantiate the CLI
+- check for relevant API keys (if I must)
+- start the agent selection
+- start the voice listening loop

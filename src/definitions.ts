@@ -41,6 +41,11 @@ export type CLIArgs = {
   debugMode?: boolean;
   testMode?: boolean;
   apiKey?: string;
+  voice?: boolean;
+};
+
+export type CLIOptions = {
+  voice: boolean;
 };
 
 export type Globals = {
@@ -51,6 +56,7 @@ export type Globals = {
   SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: string;
   ANTHROPIC_API_KEY: string | undefined;
   ANTHROPIC_MAX_PROMPT_CACHE_SIZE: number;
+  VOICE_MODE: boolean;
 };
 
 export type CacheOption = "tools" | "system";
