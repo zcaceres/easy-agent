@@ -42,10 +42,11 @@ export default class EasyAgentCLI implements EasyAgent {
       let userInput;
       if (this.voiceModeActivated) {
         userInput = await voiceInterface!.transcribeAudio();
+        UI.yellow(`You said: ${userInput}`);
       } else {
         userInput = await UI.promptForUserInput("");
       }
-      // await agent.start(userInput);
+      await agent.start(userInput);
     }
   }
 }

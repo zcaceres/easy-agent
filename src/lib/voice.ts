@@ -4,7 +4,7 @@ import fs from "fs";
 import { SpeechClient } from "@google-cloud/speech";
 import UI from "./ui";
 
-const tmpFile = fs.createWriteStream("test.wav", { encoding: "binary" });
+const TIMEOUT_ONE_MIN_IN_SECONDS = 59500;
 
 class VoiceInterface {
   private client: SpeechClient;
@@ -14,52 +14,82 @@ class VoiceInterface {
   }
 
   async transcribeAudio(): Promise<string> {
-    return new Promise((resolve, _reject) => {
-      const request = {
-        config: {
-          encoding: "LINEAR16" as const,
-          sampleRateHertz: 16000,
-          languageCode: "en-US",
-        },
-        interimResults: false,
-      };
+    return new Promise((resolve, reject) => {
+      UI.green("Listening. Press Enter to stop recording.");
 
-      UI.green("Listening, please speak...");
+      let recording = recorder.record({
+        sampleRate: 16000,
+        channels: 1,
+        verbose: true,
+        audioType: "wav",
+        recordProgram: "rec",
+        // endOnSilence: true,
+        // silence: "2.0",
+      });
 
-      const recognizeStream = this.client
-        .streamingRecognize(request)
-        .on("data", (data) => {
-          console.log("data", data);
-          // if (data.results[0] && data.results[0].alternatives[0]) {
-          // const transcription = data.results[0].alternatives[0].transcript;
-          // console.log(`Transcription: ${transcription}`);
-          // recorder.stop();
-          // resolve(transcription);
-          // }
+      let tmpFile = fs
+        .createWriteStream("voice-tmp.wav", {
+          encoding: "binary",
         })
-        .on("error", console.error)
-        .on("end", () => {
-          console.log("Recognition stream ended");
+        .on("finish", async () => {
+          const request = {
+            audio: {
+              content: fs.readFileSync("voice-tmp.wav").toString("base64"),
+            },
+            config: {
+              encoding: "LINEAR16" as const,
+              sampleRateHertz: 16000,
+              languageCode: "en-US",
+            },
+            interimResults: false,
+          };
+          const [response] = await this.client.recognize(request);
+          const transcription = response
+            .results!.map((result) => result.alternatives![0].transcript)
+            .join("\n");
+          resolve(transcription);
         });
 
-      // fs.createReadStream("test.wav")
-      //   .on("data", () => console.log("data"))
-      //   .on("error", (err) => console.log("error", err))
-      //   .pipe(recognizeStream);
+      recording.stream().pipe(tmpFile).on("error", console.error);
 
-      recorder
-        .record({
-          sampleRateHertz: 16000,
-          threshold: 0,
-          verbose: true,
-          // endOnSilence: true,
-          recordProgram: "rec",
-          // silence: "2.0",
-        })
-        .stream()
-        // .on("data", (data: any) => console.log("data", data))
-        .on("error", console.error)
-        .pipe(recognizeStream);
+      process.stdin.setRawMode(true);
+      process.stdin.resume();
+      // TODO: I think this is getting registered over a nd over again each time this function is called
+      process.stdin.on("data", (key) => {
+        if (key.toString() === "\r" || key.toString() === "\u0003") {
+          console.log("\nStopping recording...");
+          recording.stop();
+          tmpFile.end();
+          process.stdin.pause();
+          if (key.toString() === "\u0003") {
+            process.exit();
+          }
+        }
+      });
+      if (
+        !process.stdin
+          .listeners("data")
+          .some((listener) => listener.name === "stopRecordingHandler")
+      ) {
+        const stopRecordingHandler = (key: Buffer) => {
+          if (key.toString() === "\r" || key.toString() === "\u0003") {
+            console.log("\nStopping recording...");
+            recording.stop();
+            tmpFile.end();
+            process.stdin.pause();
+            if (key.toString() === "\u0003") {
+              process.exit();
+            }
+          }
+        };
+        process.stdin.on("data", stopRecordingHandler);
+      }
+
+      setTimeout(() => {
+        UI.red("Recording timed out after 60 seconds. Stopping recording...");
+        recording.stop();
+        tmpFile.end();
+      }, TIMEOUT_ONE_MIN_IN_SECONDS);
     });
   }
 

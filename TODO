@@ -1,16 +1,12 @@
 ## Todo
+- [] Make sure you can pause recording so you can read to figure out the next thing you're gonna say.
+    - [] press enter to continue
+- [] The keyboard handlers inside the recording module are flaky. They appear to register more than once and it makes it impossible to kill the process and duplicates logs.
 
-NEXT
-WHY WON'T GCLOUD TURN THE AUDIO STREAM INTO A TRANSCRIPT?
 - ideas
+    - figure out why google speech to text doesn't work.. not even their boilerplate one
     - do VOSK
     - do DeepSpeech
-    - figure out why google speech to text doesn't work.. not even their local one
-
-We have stubbed in basic voice support.
-We know we can RECORD voice.
-We know in principle that we can get a transcript... from somewhere.
-And we know that we can pass this transcript as input to the agent as long as we turn it into a striong.
 
 - [] Voice support
     - [] README update with TOC
