@@ -1,6 +1,6 @@
 {
   "name": "easy-agent",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A simple Typescript framework to build and run tool-wielding AI Agents.",
   "type": "module",
   "main": "dist/index.js",

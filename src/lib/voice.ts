@@ -22,7 +22,7 @@ class VoiceInterface {
       channels: 1,
       // verbose: true,
       audioType: "wav",
-      recordProgram: "sox",
+      recordProgram: "rec",
     });
   }
 
