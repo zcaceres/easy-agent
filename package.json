@@ -44,11 +44,13 @@
     "jsdom": "^24.1.1",
     "node-cache": "^5.1.2",
     "node-record-lpcm16": "^1.0.1",
+    "say": "^0.16.0",
     "yargs": "^17.7.2"
   },
   "scripts": {
     "start": "bun run src/example.cli.ts",
-    "debug": "bun run src/example.cli.ts --debug-mode",
+    "voice": "bun run src/example.cli.ts --voice",
+    "debug": "bun run src/example.cli.ts --debug",
     "cli": "bun run src/example.cli.ts",
     "add-agent": "bun run scripts/add-agent.ts",
     "add-tool": "bun run scripts/add-tool.ts",

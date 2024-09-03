@@ -4,7 +4,7 @@ import type { CLIArgs, Globals, LogMode } from "src/definitions";
 const argv = yargs(hideBin(process.argv)).argv as CLIArgs;
 
 function getMode(): LogMode {
-  if (argv.debugMode) {
+  if (argv.debug) {
     return "debug";
   }
   if (argv.testMode) {

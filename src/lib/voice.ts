@@ -5,6 +5,9 @@ import { SpeechClient } from "@google-cloud/speech";
 import UI from "./ui";
 
 const TIMEOUT_ONE_MIN_IN_SECONDS = 59500;
+const SAMPLE_RATE_HERTZ = 16000;
+const TMP_FILE_PATH = "voice-tmp.wav";
+const LANGUAGE_CODE = "en-US";
 
 class VoiceInterface {
   private client: SpeechClient;
@@ -13,83 +16,110 @@ class VoiceInterface {
     this.client = new SpeechClient();
   }
 
+  createRecorder() {
+    return recorder.record({
+      sampleRate: SAMPLE_RATE_HERTZ,
+      channels: 1,
+      // verbose: true,
+      audioType: "wav",
+      recordProgram: "sox",
+    });
+  }
+
+  createTmpFile() {
+    return fs.createWriteStream(TMP_FILE_PATH, {
+      encoding: "binary",
+    });
+  }
+
+  async getTranscript() {
+    const request = {
+      audio: {
+        content: fs.readFileSync(TMP_FILE_PATH).toString("base64"),
+      },
+      config: {
+        encoding: "LINEAR16" as const,
+        sampleRateHertz: SAMPLE_RATE_HERTZ,
+        languageCode: LANGUAGE_CODE,
+      },
+      interimResults: false,
+    };
+    const [response] = await this.client.recognize(request);
+    return response
+      .results!.map((result) => result.alternatives![0].transcript)
+      .join("\n");
+  }
+
   async transcribeAudio(): Promise<string> {
     return new Promise((resolve, reject) => {
-      UI.green("Listening. Press Enter to stop recording.");
+      UI.green(
+        "Press SPACEBAR to start recording. Press ENTER to stop recording.",
+      );
 
-      let recording = recorder.record({
-        sampleRate: 16000,
-        channels: 1,
-        verbose: true,
-        audioType: "wav",
-        recordProgram: "rec",
-        // endOnSilence: true,
-        // silence: "2.0",
-      });
+      let recording: any;
+      let tmpFile: fs.WriteStream;
+      let timeout: NodeJS.Timeout;
 
-      let tmpFile = fs
-        .createWriteStream("voice-tmp.wav", {
-          encoding: "binary",
-        })
-        .on("finish", async () => {
-          const request = {
-            audio: {
-              content: fs.readFileSync("voice-tmp.wav").toString("base64"),
-            },
-            config: {
-              encoding: "LINEAR16" as const,
-              sampleRateHertz: 16000,
-              languageCode: "en-US",
-            },
-            interimResults: false,
-          };
-          const [response] = await this.client.recognize(request);
-          const transcription = response
-            .results!.map((result) => result.alternatives![0].transcript)
-            .join("\n");
-          resolve(transcription);
-        });
+      const startRecording = () => {
+        UI.green("Press Enter to stop recording.");
+        recording = this.createRecorder();
+        tmpFile = this.createTmpFile();
 
-      recording.stream().pipe(tmpFile).on("error", console.error);
+        recording
+          .stream()
+          .pipe(tmpFile)
+          .on("error", (err: any) => reject(err));
+
+        tmpFile
+          .on("finish", async () => {
+            UI.green("Transcribing...");
+            const transcription = await this.getTranscript();
+            resolve(transcription);
+          })
+          .on("error", (err: any) => reject(err));
+
+        timeout = setTimeout(() => {
+          UI.red("Recording stopped after 60 seconds...");
+          stopRecording();
+        }, TIMEOUT_ONE_MIN_IN_SECONDS);
+      };
+
+      const stopRecording = () => {
+        if (recording) {
+          clearTimeout(timeout);
+          recording.stop();
+          tmpFile.end();
+        }
+        process.stdin.setRawMode(false);
+        process.stdin.pause();
+      };
+
+      const handleKeyPress = (key: Buffer) => {
+        if (key.toString() === " " && !recording) {
+          startRecording();
+        } else if (
+          (key.toString() === "\r" || key.toString() === "\n") &&
+          recording
+        ) {
+          stopRecording();
+        } else if (key.toString() === "\u0003") {
+          console.log("\nCtrl+C pressed. Exiting...");
+          stopRecording();
+          process.stdin.removeListener("data", handleKeyPress);
+          process.exit();
+        }
+      };
 
       process.stdin.setRawMode(true);
       process.stdin.resume();
-      // TODO: I think this is getting registered over a nd over again each time this function is called
-      process.stdin.on("data", (key) => {
-        if (key.toString() === "\r" || key.toString() === "\u0003") {
-          console.log("\nStopping recording...");
-          recording.stop();
-          tmpFile.end();
-          process.stdin.pause();
-          if (key.toString() === "\u0003") {
-            process.exit();
-          }
-        }
-      });
-      if (
-        !process.stdin
-          .listeners("data")
-          .some((listener) => listener.name === "stopRecordingHandler")
-      ) {
-        const stopRecordingHandler = (key: Buffer) => {
-          if (key.toString() === "\r" || key.toString() === "\u0003") {
-            console.log("\nStopping recording...");
-            recording.stop();
-            tmpFile.end();
-            process.stdin.pause();
-            if (key.toString() === "\u0003") {
-              process.exit();
-            }
-          }
-        };
-        process.stdin.on("data", stopRecordingHandler);
-      }
+      process.stdin.on("data", handleKeyPress);
 
-      setTimeout(() => {
-        UI.red("Recording timed out after 60 seconds. Stopping recording...");
-        recording.stop();
-        tmpFile.end();
-      }, TIMEOUT_ONE_MIN_IN_SECONDS);
+      process.on("SIGINT", () => {
+        console.log("\nCtrl+C pressed. Exiting...");
+        stopRecording();
+        process.stdin.removeListener("data", handleKeyPress);
+        process.exit();
+      });
     });
   }
 

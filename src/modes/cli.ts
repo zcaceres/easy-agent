@@ -29,9 +29,6 @@ export default class EasyAgentCLI implements EasyAgent {
 
   private async setup() {
     const agent = await AgentSelector.fromCLI(this.registeredAgents);
-    let voiceInterface = this.voiceModeActivated
-      ? await VoiceInterface.create()
-      : null;
 
     if (!agent) {
       UI.red("No agent selected. Exiting.");
@@ -39,8 +36,9 @@ export default class EasyAgentCLI implements EasyAgent {
     }
 
     while (true) {
-      let userInput;
+      let userInput: string;
       if (this.voiceModeActivated) {
+        const voiceInterface = await VoiceInterface.create();
         userInput = await voiceInterface!.transcribeAudio();
         UI.yellow(`You said: ${userInput}`);
       } else {

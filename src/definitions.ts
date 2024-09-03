@@ -38,7 +38,7 @@ export type LogMode = "debug" | "test" | "none";
 export type CLIArgs = {
   model?: string;
   maxModelTokens?: number;
-  debugMode?: boolean;
+  debug?: boolean;
   testMode?: boolean;
   apiKey?: string;
   voice?: boolean;
