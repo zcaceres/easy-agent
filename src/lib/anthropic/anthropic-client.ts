@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 
+// import Say from "say";
 import type { AgentConfig, LLMClient, HistoryEntry } from "src/definitions";
 import globals from "src/lib/global-config";
 import UI from "src/lib/ui";
@@ -156,6 +157,10 @@ class AnthropicClient implements LLMClient {
     }
 
     this.renderAssistant(text);
+
+    // if (globals.VOICE_MODE) {
+    //   Say.speak(text);
+    // }
   }
 
   private async message() {

@@ -1,6 +1,6 @@
 {
   "name": "easy-agent",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple Typescript framework to build and run tool-wielding AI Agents.",
   "type": "module",
   "main": "dist/index.js",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/bun": "latest",
