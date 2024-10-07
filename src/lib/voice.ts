@@ -1,5 +1,5 @@
 // @ts-ignore
-import recorder from "node-record-lpcm16";
+import recorder, { Recording } from "./node-record-lpcm16";
 import fs from "fs";
 import { SpeechClient } from "@google-cloud/speech";
 import UI from "./ui";
@@ -16,13 +16,13 @@ class VoiceInterface {
     this.client = new SpeechClient();
   }
 
-  createRecorder() {
+  createRecorder(): Recording {
     return recorder.record({
       sampleRate: SAMPLE_RATE_HERTZ,
       channels: 1,
       // verbose: true,
       audioType: "wav",
-      recordProgram: "rec",
+      recorder: "rec",
     });
   }
 
@@ -81,7 +81,7 @@ class VoiceInterface {
         timeout = setTimeout(() => {
           UI.red("Recording stopped after 60 seconds...");
           stopRecording();
-        }, TIMEOUT_ONE_MIN_IN_SECONDS);
+        }, TIMEOUT_ONE_MIN_IN_SECONDS) as NodeJS.Timeout;
       };
 
       const stopRecording = () => {

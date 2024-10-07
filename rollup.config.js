@@ -18,6 +18,7 @@ export default {
     "express",
     "jsdom",
     "node-cache",
+    "@google-cloud/speech",
     "yargs",
     "tslib",
   ],
