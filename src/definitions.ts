@@ -38,9 +38,14 @@ export type LogMode = "debug" | "test" | "none";
 export type CLIArgs = {
   model?: string;
   maxModelTokens?: number;
-  debugMode?: boolean;
+  debug?: boolean;
   testMode?: boolean;
   apiKey?: string;
+  voice?: boolean;
+};
+
+export type CLIOptions = {
+  voice: boolean;
 };
 
 export type Globals = {
@@ -51,6 +56,7 @@ export type Globals = {
   SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: string;
   ANTHROPIC_API_KEY: string | undefined;
   ANTHROPIC_MAX_PROMPT_CACHE_SIZE: number;
+  VOICE_MODE: boolean;
 };
 
 export type CacheOption = "tools" | "system";
@@ -179,3 +185,25 @@ export type PromptCache = {
 };
 
 export type AnthropicModelTypes = Anthropic.Messages.Model;
+
+export interface RecordingOptions {
+  sampleRate: number;
+  channels: number;
+  compress: boolean;
+  threshold: number;
+  thresholdStart: number | null;
+  thresholdEnd: number | null;
+  silence: string;
+  recorder: string;
+  endOnSilence: boolean;
+  audioType: string;
+  device?: string;
+}
+
+export type RecordingOptionsOverrides = Partial<RecordingOptions>;
+
+export interface RecorderResult {
+  cmd: string;
+  args: string[];
+  spawnOptions?: Record<string, any>;
+}

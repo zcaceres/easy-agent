@@ -1,6 +1,7 @@
 export { default as CorporateAnalyst } from "./sample/corporate-analyst";
 export { default as CulinaryCreator } from "./sample/culinary-creator";
 export { default as Debugger } from "./sample/debugger";
+export { default as Editor } from "./sample/editor";
 export { default as DiceRoller } from "./sample/dice-roller";
 export { default as ExcelFormulaExpert } from "./sample/excel-formula-expert";
 export { default as Jsonifier } from "./sample/jsonifier";

@@ -26,6 +26,7 @@ A very simple Typescript framework to build tool-wielding AI Agents.
 - A few fun pre-baked Agents
 - Use Agents in either CLI and Server Modes
 - Prompt caching support
+- Beta: Voice mode (speak to the agent)
 
 ## Setup
 
@@ -314,4 +315,24 @@ Agent.create({
 });
 ```
 
-This setup will cache both the system prompt and tools, in that order, up to the Anthropic-imposed limit.
+### Voice Mode
+
+Voice commands are available when using the `EasyAgentCLI`. To enable voice mode:
+
+As CLI mode:
+
+Start CLI
+```bash
+bun run cli --voice
+```
+
+As library:
+
+```ts
+import { EasyAgentCLI } from "easy-agent";
+import MyAgent from "./some-location-where-i-defined-it";
+
+EasyAgentCLI.start([MyAgent], { voice: true });
+```
+
+Voice mode uses Google Speech to Text, so you'll need valid Google Cloud API credentials in your environment to use it. You'll also need to enable the Speech to Text API in your Google Cloud Console.

@@ -1,4 +1,5 @@
 import DiceRoller from "src/agents/sample/dice-roller";
+import Editor from "src/agents/sample/editor";
 import Librarian from "src/agents/sample/librarian";
 import Vanilla from "src/agents/sample/vanilla";
 import Tutor from "src/agents/sample/tutor";
@@ -26,6 +27,7 @@ import EasyAgentCLI from "src/modes/cli";
 EasyAgentCLI.start([
   // Add your agent (see your-agent-here.example.ts)!
   DiceRoller(),
+  Editor(),
   Librarian(),
   Vanilla(),
   Tutor(),
