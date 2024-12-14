@@ -1,4 +1,4 @@
-import type { NormalizedName } from "src/definitions";
+import type { NormalizedName } from "src/types";
 
 /**
  * This helps us maintain string consistency across caches, agent registry, API requests etc.
