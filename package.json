@@ -37,7 +37,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.27.0",
+    "@anthropic-ai/sdk": "^0.32.1",
     "colors": "^1.4.0",
     "express": "^4.19.2",
     "jsdom": "^24.1.1",
@@ -55,7 +55,7 @@
     "prepublishOnly": "npm run build",
     "test": "bun test --test-mode",
     "postinstall": "mkdir -p session-log && mkdir -p logs",
-    "check-types": "tsc --noEmit --project tsconfig.json ",
+    "typecheck": "tsc --noEmit --project tsconfig.json ",
     "check-for-api-key": "bun run check-for-api-key.ts",
     "prepare": "husky"
   },

@@ -1,6 +1,6 @@
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-import type { CLIArgs, Globals, LogMode } from "src/definitions";
+import type { CLIArgs, Globals, LogMode } from "src/types";
 const argv = yargs(hideBin(process.argv)).argv as CLIArgs;
 
 function getMode(): LogMode {
@@ -16,7 +16,7 @@ function getMode(): LogMode {
 const globals: Globals = {
   LOG_MODE: getMode(),
   MAX_MODEL_TOKENS_DEFAULT: argv.maxModelTokens ?? 2096,
-  ANTHROPIC_MODEL_DEFAULT: argv.model ?? "claude-3-haiku-20240307",
+  ANTHROPIC_MODEL_DEFAULT: argv.model ?? "claude-3-5-sonnet-latest",
   MESSAGE_HISTORY_LOG_FILE_PATH_DEFAULT: "logs/message-history.json",
   SESSION_HISTORY_LOG_DIR_PATH_DEFAULT: "session-log",
   ANTHROPIC_API_KEY: argv.apiKey ?? process.env["ANTHROPIC_API_KEY"],

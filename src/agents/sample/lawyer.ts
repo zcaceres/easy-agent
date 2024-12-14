@@ -1,4 +1,5 @@
 import Agent from "src/lib/agent";
+import FetchWebsiteText from "src/tools/sample/FetchWebsiteText";
 
 const PROMPT_LAWYER = `
 You're an excellent lawyer who always tells the truth and works in the interest of his client. You have incredible attention to detail and never miss any critical fact or implication of a legal document. When you make a point, you always include accurate and relevant citations to the document that I'm having you review to support and prove your point.
@@ -12,6 +13,7 @@ const Lawyer = () =>
   Agent.create({
     name: "Lawyer",
     prompt: PROMPT_LAWYER,
+    tools: [FetchWebsiteText],
   });
 
 export default Lawyer;

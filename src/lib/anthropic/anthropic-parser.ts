@@ -1,5 +1,5 @@
 import type Anthropic from "@anthropic-ai/sdk";
-import { MessageParser } from "src/definitions";
+import { MessageParser } from "src/types";
 
 class AnthropicMessageParser implements MessageParser {
   static parse(response: Anthropic.Messages.Message) {

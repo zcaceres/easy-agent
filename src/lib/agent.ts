@@ -1,9 +1,5 @@
 import globals from "src/lib/global-config";
-import type {
-  AgentConfig,
-  AgentInitializer,
-  NormalizedName,
-} from "src/definitions";
+import type { AgentConfig, AgentInitializer, NormalizedName } from "src/types";
 import NormalizeName from "src/lib/name-normalizer";
 import SessionLog from "src/lib/session-log";
 import AnthropicMessageHistory from "src/lib/message-history";

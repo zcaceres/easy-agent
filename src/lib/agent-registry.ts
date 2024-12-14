@@ -1,4 +1,4 @@
-import type { AgentMap, NormalizedName, Registry } from "src/definitions";
+import type { AgentMap, NormalizedName, Registry } from "src/types";
 import Agent from "src/lib/agent";
 import NormalizeName from "src/lib/name-normalizer";
 

@@ -3,7 +3,7 @@ import type {
   AgentConfig,
   AnthropicConfiguredClient,
   HistoryEntry,
-} from "src/definitions";
+} from "src/types";
 import AnthropicPromptCache from "./anthropic-prompt-cache";
 
 /**

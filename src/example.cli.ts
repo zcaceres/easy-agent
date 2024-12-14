@@ -3,6 +3,7 @@ import Librarian from "src/agents/sample/librarian";
 import Vanilla from "src/agents/sample/vanilla";
 import Tutor from "src/agents/sample/tutor";
 import Redactor from "src/agents/sample/redactor";
+import Rewriter from "src/agents/sample/rewriter";
 import Translator from "src/agents/sample/translator";
 import Lawyer from "src/agents/sample/lawyer";
 import ResearchAssistant from "src/agents/sample/research-assistant";
@@ -32,6 +33,7 @@ EasyAgentCLI.start([
   Redactor(),
   Translator(),
   ResearchAssistant(),
+  Rewriter(),
   Lawyer(),
   Summarizer(),
   Toolmaker(),

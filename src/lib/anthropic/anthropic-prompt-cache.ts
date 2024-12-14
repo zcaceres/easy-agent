@@ -5,7 +5,7 @@ import type {
   CacheOption,
   HistoryEntry,
   PromptCache,
-} from "src/definitions";
+} from "src/types";
 import globals from "src/lib/global-config";
 import type Tool from "src/lib/tool";
 

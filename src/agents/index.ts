@@ -9,6 +9,7 @@ export { default as Librarian } from "./sample/librarian";
 export { default as ProductNamingPro } from "./sample/product-naming-pro";
 export { default as Programmer } from "./sample/programmer";
 export { default as Redactor } from "./sample/redactor";
+export { default as Rewriter } from "./sample/rewriter";
 export { default as ResearchAssistant } from "./sample/research-assistant";
 export { default as SpreadsheetExpert } from "./sample/spreadsheet-expert";
 export { default as Summarizer } from "./sample/summarizer";

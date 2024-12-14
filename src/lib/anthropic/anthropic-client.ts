@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-import type { AgentConfig, LLMClient, HistoryEntry } from "src/definitions";
+import type { AgentConfig, LLMClient, HistoryEntry } from "src/types";
 import globals from "src/lib/global-config";
 import UI from "src/lib/ui";
 import ToolRunner from "src/lib/tool-runner";

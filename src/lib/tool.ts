@@ -1,4 +1,4 @@
-import type { ToolArg, ToolConfig, ToolDefinition } from "src/definitions";
+import type { ToolArg, ToolConfig, ToolDefinition } from "src/types";
 
 class Tool {
   private _definition: ToolDefinition;

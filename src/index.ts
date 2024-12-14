@@ -4,4 +4,4 @@ export * as agents from "./agents";
 export * as tools from "./tools";
 export { default as Agent } from "./lib/agent";
 export { default as Tool } from "./lib/tool";
-export * from "./definitions";
+export * from "./types";

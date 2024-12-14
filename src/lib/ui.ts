@@ -1,7 +1,7 @@
 import colors from "colors";
 import * as readline from "readline";
 
-import type { HistoryEntry } from "src/definitions";
+import type { HistoryEntry } from "src/types";
 
 export default class UI {
   static async promptForUserInput(

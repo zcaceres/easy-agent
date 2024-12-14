@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { ToolArg } from "../src/definitions";
+import { ToolArg } from "../src/types";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";

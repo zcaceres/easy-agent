@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import type { HistoryEntry, LogMode } from "src/definitions";
+import type { HistoryEntry, LogMode } from "src/types";
 import globals from "src/lib/global-config";
 
 export default class SessionLog {

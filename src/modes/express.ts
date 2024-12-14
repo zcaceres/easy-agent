@@ -1,7 +1,7 @@
 import express from "express";
 import type { Request, Response } from "express";
 import AgentSelector from "src/lib/agent-selector";
-import type { ServerAgent } from "src/definitions";
+import type { ServerAgent } from "src/types";
 import AgentCache from "src/lib/agent-cache";
 import type Agent from "src/lib/agent";
 
