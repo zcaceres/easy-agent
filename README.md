@@ -1,7 +1,8 @@
 # easy-agent
 
-![NPM Version](https://img.shields.io/npm/v/easy-agent)
+![easy-agent logo](logo.jpg)
 
+![NPM Version](https://img.shields.io/npm/v/easy-agent)
 
 ## What?
 
