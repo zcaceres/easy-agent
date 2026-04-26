@@ -218,6 +218,35 @@ Tips for creating effective tools:
 - Handle errors gracefully and return informative error messages.
 - Consider adding type definitions for complex input/output structures.
 
+## You.com Search Tool (optional provider)
+
+This repo now includes a built-in `fetch_you_search` sample tool for web search-backed agents.
+
+Setup:
+
+```bash
+# Optional (tool also works with a limited unauthenticated quota)
+export YDC_API_KEY=your_key_here
+```
+
+Usage:
+
+```typescript
+import Agent from "src/lib/agent";
+import FetchYouSearch from "src/tools/sample/FetchYouSearch";
+
+export default Agent.create({
+  name: "Web Research Agent",
+  prompt: "Use fetch_you_search to gather current web evidence before answering.",
+  tools: [FetchYouSearch],
+});
+```
+
+Behavior notes:
+- Uses `https://api.you.com/v1/agents/search` with `query` + `count`.
+- Uses `X-API-Key` when provided via tool input or `YDC_API_KEY`.
+- Returns `{ error, results: [] }` when the provider returns a non-2xx status, so agents can recover gracefully.
+
 ### Toolmaker Mode
 
 easy-agent comes bundled with an agent named Toolmaker, which can make tools for your agents.

@@ -1,5 +1,6 @@
 export { default as CreateTool } from "./sample/CreateTool";
 export { default as FetchGoogleSERP } from "./sample/FetchGoogleSERP";
+export { default as FetchYouSearch } from "./sample/FetchYouSearch";
 export { default as FetchHTML } from "./sample/FetchHTML";
 export { default as FetchWeatherByZip } from "./sample/FetchWeatherByZip";
 export { default as FetchWebsiteText } from "./sample/FetchWebsiteText";
